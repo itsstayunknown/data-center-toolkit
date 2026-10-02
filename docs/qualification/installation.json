@@ -1,0 +1,25 @@
+{
+  "qualified_at": "2026-10-02T11:56:02.716630+00:00",
+  "result": "PASS",
+  "version_output": "DCT 0.1.0",
+  "scope": "Exact release installer; clean temporary HOME containing spaces; non-root",
+  "python_origin": "system Python 3.14.7, isolated installed runtime; no source virtualenv",
+  "commands": [
+    "sha256sum -c SHA256SUMS (outer and extracted bundle)",
+    "sh install.sh",
+    "dct --version",
+    "dct --help",
+    "dct --fixture <synthetic fixture from bundled source archive> (PTY; q)",
+    "sh ~/.local/share/dct/uninstall.sh"
+  ],
+  "checksums_verified": 9,
+  "installed_import_startup": "PASS",
+  "installed_console_tui": "PASS",
+  "synthetic_terminal_bytes_observed": 5895,
+  "uninstall": "PASS; DCT root, launcher and lock removed",
+  "unrelated_files": "PASS; complete HOME file boundary checked; four sentinel files and shell configuration preserved",
+  "real_home_modified": false,
+  "qualified_installer_sha256": "f24c1d7dd36357c086023c79716e5c519b495ecb81a0a956701cb7d291dbd81e",
+  "qualified_uninstaller_sha256": "ca5035e0c14cecafe28b54797bba30694c918ccd22a2bb4ca2710cf61c3af79a",
+  "qualified_wheel_sha256": "0e51d9833afccf3d0c5ba20e0df3b44efa9226c57e6796c6817a2e35ba8ccd68"
+}

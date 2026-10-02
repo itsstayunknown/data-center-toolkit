@@ -4,8 +4,8 @@
 
 The baseline audit inspected all 148 tracked files at the final local-only candidate
 and all 55 files at its parent, including source, tests, fixture JSON, SVG screenshots,
-sample reports, qualification records, documentation, workflow and license. Both
-reachable commits' author/committer metadata and messages were checked separately.
+sample reports, qualification records, documentation, workflow and license. Those
+two baseline commits' author/committer metadata and messages were checked separately.
 
 Procedures: `git ls-files`; `git rev-list --all`; `git ls-tree -r --name-only` and
 `git show` for every reachable revision; `git grep` and current-tree `rg` scans for
@@ -50,3 +50,21 @@ mention generic private-key/home-path examples intentionally to test exclusions.
 The audit uses targeted pattern searches and manual inspection; it is not a proof
 that arbitrary secrets or undisclosed proprietary material cannot exist. Public
 release authorization remains a separate founder decision. No publication occurred.
+
+## Release packaging audit
+
+The packaging lane independently audited the publishable working tree and all
+three then-reachable commits, including generic project commit identities.
+Installer/uninstaller scripts, ownership manifests, tests, installation instructions,
+qualification records and preliminary wheel/source/Linux archives contained no
+private identifiers, credentials or proprietary infrastructure material.
+The only IPv4 literals remain `0.0.0.0` and documentation range `192.0.2.0/24`;
+synthetic netrc input in installer tests is explicitly artificial.
+
+Final regenerated release assets and all four reachable commits are rechecked at
+closeout; identifying-pattern and archive-content checks pass. Only main remains
+a publication ref, with no Git remote or unreachable historical objects. Archives exclude environments, Git metadata and local reports;
+Linux bundle owner headers are zero/empty. Installer dependency downloads use
+staged HOME, no pip cache, null netrc, disabled keyring and no proxy environment.
+No credential files or installation logs are distributed. The audit limits above
+still apply; no publication or remote creation occurred.

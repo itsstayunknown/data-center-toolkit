@@ -12,7 +12,38 @@ incident evidence without memorizing dozens of commands.
 
 DCT v0.1.0 is a public release candidate for founder review. It does not claim
 enterprise production readiness. Qualification evidence and limitations are in
-[verification](docs/verification.md) and [platform support](docs/platform-support.md).
+[verification](docs/verification.md), [installation qualification](docs/packaging-verification.md)
+and [platform support](docs/platform-support.md).
+
+## Install and launch
+
+Download **`dct-0.1.0-linux.tar.gz`** from GitHub Releases when the release is
+published. On Linux with Python **3.11 or newer** and `venv` support:
+
+```sh
+tar -xzf dct-0.1.0-linux.tar.gz
+cd dct-0.1.0
+sh install.sh
+dct
+```
+
+The installer sets up DCT for your user in `~/.local/share/dct` and creates the
+`~/.local/bin/dct` command. No sudo or development tools are needed. It downloads
+Python dependencies, so installation requires internet access. If your shell needs
+a PATH change, the installer prints the exact instructions; it never edits your
+shell configuration.
+
+Navigate with the **keyboard or mouse**. `dct` opens localhost immediately;
+`dct --help` lists options and `dct --version` shows the installed version.
+
+To uninstall:
+
+```sh
+sh ~/.local/share/dct/uninstall.sh
+```
+
+See [installation](docs/installation.md) for inspect-first installation, PATH
+setup, reinstall/upgrade, manual installation and local release assets.
 
 ## What you can inspect
 
@@ -30,32 +61,15 @@ Missing commands, denied permissions and incomplete telemetry remain **UNKNOWN**
 Unavailable NVIDIA tooling is a capability gap. Resolver configuration alone does
 not prove DNS works. Diagnostics never perform a recommended repair automatically.
 
-## Install
-
-Linux and Python **3.11 or newer** are required. Install the built wheel in an
-isolated environment; sudo is unnecessary:
-
-```sh
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install dist/data_center_toolkit-0.1.0-py3-none-any.whl
-dct
-```
-
-From a source checkout, use `python -m pip install .`. Optional host tools include
-`ip`, `ss`, `ps`, `lsblk`, `findmnt`, `df`, `systemctl`, `journalctl`, `timedatectl`,
-`resolvectl`, `smartctl`, `nvme` and `nvidia-smi`. Remote inspection additionally
-requires the system `ssh` command locally and ordinary inspection tools remotely.
-DCT installs no agent or utilities on the inspected host.
-
 ## Quick start: localhost
 
 ```sh
 dct
 ```
 
-Home immediately inspects localhost. Open Host Identity, Resources or Quick Triage;
-use `/` to find a task. The target indicator stays visible as you navigate.
+Home immediately inspects localhost. Open Host Identity, Resources or Quick Triage
+with the keyboard or mouse; use `/` to find a task. The target indicator stays
+visible as you navigate.
 
 | Key | Action |
 | --- | --- |
@@ -189,6 +203,19 @@ capabilities. No source-of-truth mutation or bulk host operations are implemente
 See [CHANGELOG](CHANGELOG.md) for the v0.1.0 scope.
 
 ## Contributing
+
+Developer setup is separate from the end-user installer. In a source checkout,
+create an isolated environment before installing development dependencies:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+```
+
+Optional host tools include `ip`, `ss`, `ps`, `lsblk`, `findmnt`, `df`, `systemctl`,
+`journalctl`, `timedatectl`, `resolvectl`, `smartctl`, `nvme` and `nvidia-smi`.
+Remote inspection requires the local system `ssh` command and ordinary inspection
+tools remotely. DCT installs no agent or utilities on the inspected host.
 
 Use synthetic fixtures and preserve UNKNOWN states and safety boundaries. Explain
 the observed problem, reproduction, expected behavior and verification in a change.

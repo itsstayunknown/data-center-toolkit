@@ -15,6 +15,8 @@ Initial evidence-first Linux terminal toolkit release candidate.
 - Target and inventory abstractions with local, OpenSSH-config and static YAML providers.
 - Shared local, fixture and read-only OpenSSH executors; one remote target at a time.
 - Synthetic fixtures, deterministic execution tests and release scenario matrix.
+- Non-root release installer, safe reinstall/upgrade and ownership-validated uninstall.
+- Isolated `dct` launcher with version/help, shell PATH guidance and checksummed release bundle.
 
 Fleet execution and NetBox/Nautobot integrations remain future design only.
 No repository publication, PyPI upload or GitHub release is part of this candidate.

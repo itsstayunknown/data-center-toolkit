@@ -1,5 +1,6 @@
 import argparse
 import sys
+from importlib.metadata import version
 from pathlib import Path
 
 from dct.collectors.snapshot import collect
@@ -37,7 +38,12 @@ def direct_target(value: str) -> Target:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="DCT: evidence-first Linux terminal toolkit")
+    parser = argparse.ArgumentParser(
+        prog="dct", description="DCT — Data Center Toolkit: evidence-first Linux TUI"
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"DCT {version('data-center-toolkit')}"
+    )
     context = parser.add_mutually_exclusive_group()
     context.add_argument(
         "--fixture", type=Path, help="Synthetic fixture demo (never executes host commands)"

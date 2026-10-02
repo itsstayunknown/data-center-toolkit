@@ -1,5 +1,10 @@
 # v0.1.0 candidate verification
 
+The later release packaging lane is recorded in
+[packaging verification](packaging-verification.md). Application qualification below
+remains historical evidence; packaging adds installation checks without changing
+diagnostic or TUI behavior.
+
 This record covers the final pre-publication lane from the clean local-only
 candidate. No repository publication, remote creation, push, release or PyPI upload
 was authorized. Tests use synthetic executors; operation tests never change a host.
