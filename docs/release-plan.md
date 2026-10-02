@@ -1,24 +1,34 @@
-# v0.1 release candidate execution plan
+# v0.1.0 final pre-publication lane
 
-Baseline: clean main at 4f5b337. Preserve home, breadcrumbs and navigation; no new
-write operations. Acceptance is the milestone 2–10 contract, fixture matrix,
-read-only local qualification, passing pytest/Ruff/strict mypy/build, independent
-code/safety/UX reviews, reviewed commit and clean working tree. No publication.
+Pre-rewrite baseline: clean candidate at `063bc474ea6e9ffc202beb6757f609ad17bd7aa5`.
+Its privacy-sanitized equivalent is `d09928ed5b7ec0dea5c0bbe40f779d6cfd4baf47`.
+The objective is a reviewable public GitHub candidate with one shared local/SSH/
+fixture collection architecture. No additional write operations or fleet execution.
+No publication, remote creation, push, PyPI upload or GitHub release is authorized.
 
-1. Add injected resource, service, network, GPU and disk telemetry collectors and
-   pure UNKNOWN-aware interpretation (bounded parallel ownership).
-2. Integrate one collection pipeline, evidence/detail screens, global aliases,
-   contextual help, triage and sanitized report allowlists.
-3. Expand scenario fixtures and regression/keyboard tests; update documentation.
-4. Validate all checks, run local read-only qualification and terminal-size UX
-   checks, capture synthetic screenshots and incident demo.
-5. Fresh independent code, safety and UX reviews; resolve findings, reverify,
-   commit and stop for founder review.
+1. Normalize Target, Executor and InventoryProvider; migrate existing fixtures.
+2. Add bounded, cancellable system-OpenSSH inspection and remote safety rejection.
+3. Integrate target selection, direct CLI selection and evidence/report attribution.
+4. Exercise executor, inventory, failure, privacy and remote UX cases synthetically.
+5. Audit tree and all Git history; remove unsafe historical content before publication.
+6. Update public README, synthetic screenshots, demos, changelog and future design.
+7. Run full pytest, Ruff, strict mypy, build, isolated wheel smoke and fixture matrix.
+8. Run local read-only qualification; attempt one approved remote qualification only
+   when existing ordinary SSH access works, without host/configuration changes.
+9. Obtain fresh independent code, security/safety, UX and public-content reviews;
+   fix material findings, reverify, commit locally and inspect final clean status.
+10. Stop with the founder report and factual PUBLICATION_READY decision.
 
-Recovery: preserve existing mount/unmount boundary; fixtures never execute live
-commands. No privileged operation is included in automated qualification.
+Recovery: preserve the original unpublished history outside publication refs before
+any privacy rewrite. Preserve local mount/unmount revalidation and fixture isolation.
+No qualification invokes sudo, installs utilities, changes services/mounts/network,
+modifies a target or tries to repair access.
 
-Status: completed. Milestones 2–10, fixture validation, read-only Arch qualification,
-primary checks and fresh independent code/safety/UX reviews are complete; material
-findings were fixed and reverified with fresh review. Commit the reviewed candidate
-locally and stop for founder review. No publication is authorized.
+Status and exact verification evidence belong in [verification](verification.md).
+[Publication audit](publication-audit.md) records privacy scope and remaining limits.
+
+Status: closed. Implementation, primary tests, synthetic screenshots, privacy/history
+sanitization, local/remote read-only qualification and fresh integrated independent
+acceptance reviews are complete. Material findings were resolved and reverified.
+The final local commit records this candidate; its SHA is available from git rev-parse
+HEAD. No publication is authorized. See verification for exact evidence and limits.

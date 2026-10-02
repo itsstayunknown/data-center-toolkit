@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Finding, Severity
 
 LINK = ("ip", "-j", "-s", "link", "show")
@@ -134,7 +134,7 @@ def _items(result: CommandResult, notes: list[str]) -> tuple[list[dict[str, Any]
     return rows, complete
 
 
-def collect(backend: Backend) -> NetworkEvidence:
+def collect(backend: Executor) -> NetworkEvidence:
     commands = [backend.run(argv) for argv in (LINK, ADDRESS, ROUTE, ROUTE6, NEIGHBOR)]
     notes: list[str] = []
     (
@@ -387,7 +387,7 @@ def diagnose(evidence: NetworkEvidence) -> tuple[Finding, ...]:
 
 
 def connectivity(
-    backend: Backend, evidence: NetworkEvidence, hostname: str, external_host: str | None = None
+    backend: Executor, evidence: NetworkEvidence, hostname: str, external_host: str | None = None
 ) -> ConnectivityEvidence:
     """Explicit active probes only; no internet target is chosen automatically."""
 

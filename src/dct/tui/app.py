@@ -1,5 +1,6 @@
 import asyncio
 import shlex
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
@@ -17,9 +18,12 @@ from dct.collectors.backend import Backend
 from dct.collectors.snapshot import collect
 from dct.collectors.storage import FINDMNT, LSBLK, collect_storage
 from dct.diagnostics.triage import assess
+from dct.executors import FixtureExecutor, LocalExecutor, SSHExecutor
+from dct.inventory import LocalInventory, merge_targets, search_targets
 from dct.models.evidence import Snapshot
 from dct.operations.storage import Outcome, Proposal, Refused, execute, propose
 from dct.reports.bundle import export
+from dct.targets import ConnectionType, Target
 from dct.tui.evidence import render, resource_summary
 from dct.tui.help import explain
 from dct.tui.views import SECTIONS, identity, storage_table, summary
@@ -40,6 +44,13 @@ class Page(Screen[None]):
         Binding("pageup", "evidence_up", "Scroll up", show=False, priority=True),
         Binding("pagedown", "evidence_down", "Scroll evidence", priority=True),
     ]
+
+    def on_mount(self) -> None:
+        app = cast(DCTApp, self.app)
+        breadcrumb = "DCT  ›  Home"
+        if self.page_title != "Home":
+            breadcrumb += "  ›  " + self.page_title
+        self.query_one("#breadcrumb", Static).update(Text(breadcrumb + "\n" + app.target_label))
 
     def action_evidence_up(self) -> None:
         self.query_one(VerticalScroll).scroll_relative(y=-10, animate=False)
@@ -159,6 +170,62 @@ class Palette(Page):
         app.open_section(selected)
 
 
+class TargetPicker(Page):
+    def action_evidence_up(self) -> None:
+        self.query_one(OptionList).scroll_relative(y=-10, animate=False)
+
+    def action_evidence_down(self) -> None:
+        self.query_one(OptionList).scroll_relative(y=10, animate=False)
+
+    """Session inventory search; selection replaces the single execution context."""
+
+    AUTO_FOCUS = "#target-search"
+
+    def __init__(self, targets: tuple[Target, ...], recent: tuple[str, ...]) -> None:
+        super().__init__("Change Target", "One target at a time. Remote inspection is read only.")
+        self.targets = sorted(
+            targets, key=lambda t: (t.id not in recent, t.display_name.casefold())
+        )
+        self.recent = recent
+        self.matches = self.targets.copy()
+
+    def label(self, target: Target) -> str:
+        mode = "REMOTE" if target.is_remote else "LOCAL"
+        if target.connection_type == ConnectionType.FIXTURE:
+            mode = "SYNTHETIC"
+        tags = " · ".join(f"{key}={value}" for key, value in target.tags.items())
+        return (
+            f"{target.display_name} • {mode} • {target.address}"
+            + (" • recent" if target.id in self.recent else "")
+            + (" • " + tags if tags else "")
+        )
+
+    def compose(self) -> ComposeResult:
+        yield Static("", id="breadcrumb")
+        yield Static(Text(self.content), id="content")
+        yield DCTInput(placeholder="Inventory: hostname, address, tag", id="target-search")
+        yield OptionList(*(Text(self.label(t)) for t in self.matches), id="choices")
+        yield Footer()
+
+    def on_input_changed(self, event: Input.Changed) -> None:
+        self.matches = list(search_targets(self.targets, event.value))
+        choices = self.query_one(OptionList)
+        choices.clear_options()
+        choices.add_options(Text(self.label(t)) for t in self.matches)
+        choices.highlighted = 0 if self.matches else None
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        event.stop()
+        event.prevent_default()
+        if self.matches:
+            cast(DCTApp, self.app).select_target(self.matches[0])
+
+    def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+        event.stop()
+        event.prevent_default()
+        cast(DCTApp, self.app).select_target(self.matches[event.option_index])
+
+
 class ProcessPage(Page):
     def __init__(self, snapshot: Snapshot) -> None:
         evidence = snapshot.resources
@@ -181,8 +248,9 @@ class ProcessPage(Page):
     @work(exclusive=True)
     async def inspect(self, pid: int) -> None:
         app = cast(DCTApp, self.app)
-        detail = await asyncio.to_thread(resources.process_detail, app.backend, pid)
-        if app.screen is self:
+        backend = app.backend
+        detail = await asyncio.to_thread(resources.process_detail, backend, pid)
+        if app.screen is self and app.backend is backend:
             app.push_screen(
                 Page(
                     f"Processes & Resources › PID {pid}",
@@ -249,8 +317,9 @@ class ServicePage(Page):
     @work(exclusive=True)
     async def inspect(self, name: str) -> None:
         app = cast(DCTApp, self.app)
-        detail = await asyncio.to_thread(services.service_detail, app.backend, name)
-        if app.screen is self:
+        backend = app.backend
+        detail = await asyncio.to_thread(services.service_detail, backend, name)
+        if app.screen is self and app.backend is backend:
             app.push_screen(Page("Services & Logs › " + name, render(detail), ("Back",)))
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
@@ -312,11 +381,12 @@ class ConnectivityPage(Page):
     @work(exclusive=True)
     async def probe(self) -> None:
         app = cast(DCTApp, self.app)
+        backend = app.backend
         hostname = self.query_one("#hostname", Input).value
         external = self.query_one("#external", Input).value or None
         try:
             result = await asyncio.to_thread(
-                network.connectivity, app.backend, self.evidence, hostname, external
+                network.connectivity, backend, self.evidence, hostname, external
             )
             content = (
                 "\n\n".join(
@@ -329,7 +399,7 @@ class ConnectivityPage(Page):
             )
         except ValueError as exc:
             content = str(exc)
-        if app.screen is self:
+        if app.screen is self and app.backend is backend:
             app.push_screen(Page(self.page_title + " › Result", content, ("Back",)))
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
@@ -398,14 +468,15 @@ class MountPage(Page):
     @work(exclusive=True)
     async def inspect(self, path: str) -> None:
         app = cast(DCTApp, self.app)
+        backend = app.backend
         self.query_one("#content", Static).update("Refreshing storage and inspecting operation…")
         try:
-            storage, _, _ = await asyncio.to_thread(collect_storage, app.backend)
-            proposal = await asyncio.to_thread(propose, app.backend, storage, path)
-            if app.screen is self:
+            storage, _, _ = await asyncio.to_thread(collect_storage, backend)
+            proposal = await asyncio.to_thread(propose, backend, storage, path)
+            if app.screen is self and app.backend is backend:
                 app.push_screen(Confirm(proposal))
         except Refused as exc:
-            if app.screen is self:
+            if app.screen is self and app.backend is backend:
                 app.push_screen(Page("Mount / Unmount › Inspection", str(exc), ("Back",)))
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
@@ -466,6 +537,7 @@ class DCTApp(App[None]):
     BINDINGS = [
         Binding("escape", "go_back", "Back", priority=True),
         Binding("h", "home", "Home"),
+        Binding("t", "targets", "Change Target"),
         Binding("slash", "search", "Search", priority=True),
         Binding("question_mark", "help", "Help", priority=True),
         Binding("q", "request_quit", "Quit"),
@@ -473,9 +545,22 @@ class DCTApp(App[None]):
         Binding("up", "focus_previous", show=False),
     ]
 
-    def __init__(self, backend: Backend, report_root: Path = Path("reports")) -> None:
+    def __init__(
+        self,
+        backend: Backend,
+        report_root: Path = Path("reports"),
+        inventory: tuple[Target, ...] = (),
+        executor_factory: Callable[[Target], Backend] | None = None,
+    ) -> None:
         super().__init__()
         self.backend = backend
+        local_targets = () if isinstance(backend, FixtureExecutor) else LocalInventory().targets()
+        self.inventory = merge_targets((*local_targets, *inventory, backend.target))
+        self.fixture_mode = isinstance(backend, FixtureExecutor) and executor_factory is None
+        if self.fixture_mode:
+            self.inventory = (backend.target,)
+        self.recent_targets = [backend.target.id]
+        self.executor_factory = executor_factory or self.make_executor
         self.report_root = report_root
         self.snapshot: Snapshot | None = None
         self.operation_running = False
@@ -483,13 +568,59 @@ class DCTApp(App[None]):
         self.last_operation_message: str | None = None
         self.quit_pending = False
 
-    def on_mount(self) -> None:
-        self.push_screen(Home())
+    @property
+    def target_label(self) -> str:
+        target = self.backend.target
+        mode = "REMOTE • READ ONLY" if target.is_remote else "LOCAL"
+        if target.connection_type == ConnectionType.FIXTURE:
+            mode = "SYNTHETIC • FIXTURE"
+        return f"Target: {target.display_name} • {mode} • {target.address}"
+
+    @staticmethod
+    def make_executor(target: Target) -> Backend:
+        return SSHExecutor(target) if target.is_remote else LocalExecutor(target)
+
+    def action_targets(self) -> None:
+        if self.operation_running:
+            self.notify("Wait for local operation verification before changing target")
+        elif not isinstance(self.screen, TargetPicker):
+            self.push_screen(TargetPicker(self.inventory, tuple(self.recent_targets)))
+
+    def select_target(self, target: Target) -> None:
+        if self.operation_running:
+            self.notify("Wait for local operation verification before changing target")
+            return
+        if target.id == self.backend.target.id:
+            self.action_home()
+            return
+        if self.fixture_mode:
+            self.notify("Fixture mode never connects to live targets")
+            return
+        executor = self.executor_factory(target)
+        self.backend.cancel()
+        self.backend = executor
+        self.snapshot = None
+        self.last_outcome = None
+        self.last_operation_message = None
+        self.recent_targets = [target.id, *(t for t in self.recent_targets if t != target.id)][:10]
+        self.action_home()
+        home = cast(Home, self.screen)
+        home.on_mount()
+        home.query_one("#content", Static).update("Collecting read-only evidence…")
+        self.load_evidence()
+
+    async def on_mount(self) -> None:
+        # Fast fixture collection can finish before screen children exist.
+        await self.push_screen(Home())
         self.load_evidence()
 
     @work(exclusive=True)
     async def load_evidence(self) -> None:
-        self.snapshot = await asyncio.to_thread(collect, self.backend)
+        backend = self.backend
+        snapshot = await asyncio.to_thread(collect, backend)
+        if self.backend is not backend:
+            return
+        self.snapshot = snapshot
         home = next((s for s in self.screen_stack if isinstance(s, Home)), None)
         if home:
             findings = assess(self.snapshot)
@@ -532,6 +663,7 @@ class DCTApp(App[None]):
             self.quit_pending = True
             self.notify("Quit requested; waiting for operation verification")
         else:
+            self.backend.cancel()
             self.exit()
 
     def open_section(self, title: str) -> None:
@@ -543,6 +675,16 @@ class DCTApp(App[None]):
         elif title == "Drives & Filesystems":
             self.push_screen(StoragePage(title, choices=("Back",)))
         elif title == "Mount / Unmount":
+            if self.backend.target.is_remote:
+                self.push_screen(
+                    Page(
+                        title,
+                        "Remote targets are read only. Mount and unmount "
+                        "operations are available on localhost only.",
+                        ("Back",),
+                    )
+                )
+                return
             page = MountPage(self.snapshot)
             if self.last_operation_message:
                 page.content += "\nLast operation: " + self.last_operation_message
@@ -592,23 +734,39 @@ class DCTApp(App[None]):
     async def save_report(self) -> None:
         if self.snapshot is None:
             return
+        snapshot = self.snapshot
+        backend = self.backend
         destination = self.report_root / datetime.now(UTC).strftime("dct-%Y%m%dT%H%M%S-%fZ")
         try:
-            await asyncio.to_thread(export, self.snapshot, destination)
+            await asyncio.to_thread(export, snapshot, destination)
+            if self.backend is not backend:
+                return
             self.push_screen(
                 Page(
                     "Incident Report",
                     f"Sanitized bundle saved: {destination}\n"
-                    "Identifiers and raw output excluded. Review before sharing.",
+                    "Raw output excluded; target identity retained in target.json. "
+                    "Review before sharing.",
                     ("Back",),
                 )
             )
         except OSError as exc:
+            if self.backend is not backend:
+                return
             self.push_screen(Page("Incident Report", f"Export failed: {exc}", ("Back",)))
 
     @work
     async def perform(self, proposal: Proposal) -> None:
         if self.operation_running:
+            return
+        if self.backend.target.is_remote:
+            self.push_screen(
+                Page(
+                    "Mount / Unmount › Result",
+                    "Remote state-changing operations are refused.",
+                    ("Back",),
+                )
+            )
             return
         self.operation_running = True
         self.notify("Operation running; verification will follow")

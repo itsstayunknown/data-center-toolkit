@@ -8,17 +8,21 @@ JSON-serializable evidence. The surface stays simple while details expose the ev
 
 - `models/evidence.py`: immutable host, block inventory, snapshot, command result and finding
   records. Schema version 2 extends the snapshot with optional domain evidence.
-- `collectors/backend.py`: injected argv execution and file reads. Linux execution uses a safe
-  system PATH, `shell=False`, captured results and timeouts. Fixture access fails closed for
-  unspecified evidence and never accesses the live host.
+- `targets.py`: normalized target identity, connection type and descriptive inventory data.
+- Inventory providers supply validated targets independently of execution. LocalInventory,
+  SSHConfigInventory and StaticInventory are the v0.1.0 providers.
+- The Executor protocol supplies command execution, file reads and capability checks.
+  LocalExecutor uses bounded subprocess execution; SSHExecutor uses the system OpenSSH
+  client; FixtureExecutor fails closed for missing evidence and never reads the live host.
+  Collectors depend on this shared interface; there is no remote collector fork.
 - `collectors/snapshot.py`: one shared read-only collection pipeline for the TUI, Quick Triage
   and export. It combines host/storage with resources, services, network, GPU and drive health.
 - Domain collectors normalize portable interfaces; pure domain assessments interpret those
   records. `diagnostics/triage.py` aggregates them without another execution path.
 - `operations/storage.py`: propose, confirm, revalidate, execute, independently verify. Only
   bounded mount/unmount is implemented; no diagnostic recommendation invokes this path.
-- `reports/bundle.py`: explicit sanitized allowlist, summary and SHA-256 manifest. Raw output,
-  journal text and identities stay out of exports.
+- `reports/bundle.py`: explicit sanitized allowlist, summary and SHA-256 manifest. Raw output and
+  journal text stay out of exports; target provenance is explicitly retained.
 - `tui/`: keyboard navigation, progressive details, contextual help and worker-based collection.
   The UI renders findings rather than deciding Linux health itself.
 
@@ -76,3 +80,51 @@ be existing, empty when mounting, root-owned, non-writable, non-symlink direct `
 children. No system or nested mounts, forced unmount, service restart or other write path is
 available. Every attempted operation refreshes inventory, including command failures and
 timeouts. See [safety](safety.md) for remaining race and journal-replay limitations.
+
+## Target selection and OpenSSH
+
+The flow is InventoryProvider → Target → Executor → Collectors → normalized Evidence
+→ Diagnostics → TUI/Reports. Target selection replaces the execution context for one
+host. Results retain target attribution so a stale worker result cannot be mistaken
+for another host. Home defaults to localhost; target selection exposes inventory
+search and session recents. The breadcrumb/header identifies LOCAL or REMOTE on
+every screen. Reports retain target ID, display name, hostname, address and
+connection type in `target.json`; SSH user, tags, metadata, jump references and
+credentials are excluded. These retained identifiers require review before sharing.
+
+OpenSSH is invoked with an argument vector, without a local shell or protocol
+library. Remote command arguments require quoting because SSH passes a command
+to the remote shell; untrusted inventory fields must never become command text.
+Normal SSH config, agent, keys, certificates, ProxyJump and known_hosts remain
+OpenSSH concerns. A private temporary launcher preserves its own argv[0] while
+executing system OpenSSH, so OpenSSH's implicit ProxyJump hops also use the launcher
+and receive mandatory noninteractive/strict-key/no-agent-forwarding/no-LocalCommand
+options. The launcher contains no credentials or target identities and is removed
+after each invocation. DCT requires noninteractive access and trusted host keys, does
+not persist credentials and does not edit SSH files or install a remote agent.
+
+Execution preserves bounded stdout/stderr, exit status, timeout/cancellation and
+target attribution. SSH errors normalize authentication, host-key, DNS, unreachable,
+timeout, unavailable-command, permission and unknown failures where distinguishable.
+Permission or command gaps remain unavailable evidence, not healthy observations.
+Remote executors reject state-changing commands and storage operations also reject
+remote targets. Inspection never invokes sudo. Local mount/unmount authorization
+cannot transfer to an SSH execution context.
+
+Inventory discovery is passive. Concrete OpenSSH aliases can become targets;
+wildcard-only patterns are not expanded. Static YAML validates malformed/duplicate
+records and rejects credential fields. Neither inventory selection nor typing
+search launches fleet commands. See [future inventory design](future-inventory.md)
+for provider pagination, bounded future scheduling and expected/observed comparison.
+
+Existing SSH configuration is trusted user-owned executable configuration: OpenSSH
+may evaluate Match exec and custom ProxyCommand programs. DCT does not sandbox or
+manage those programs. The implicit ProxyJump guarantees apply to OpenSSH-managed
+hops; arbitrary external proxy programs retain their own authentication and trust
+policy and require separate qualification. Use approved configuration only.
+
+SSH safety policy also keeps the client foreground-bound and disables tunnels,
+X11 forwarding, agent-key insertion and delegated credential caches. Cancellation
+kills the local SSH process group; it does not send remote state-changing cleanup.
+Home is mounted before collection starts, including immediately completing fixture
+contexts. Missing optional SSH inventory does not block ordinary localhost launch.

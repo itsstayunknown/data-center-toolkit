@@ -1,17 +1,18 @@
 {
   "schema_version": 2,
-  "collected_at": "2026-10-02T09:37:04.602931+00:00",
+  "collected_at": "2026-10-02T10:43:47.127078+00:00",
   "sanitized": true,
+  "target_identity_retained": true,
   "scope": "read-only host/resources/services/network/storage/GPU normalized allowlist",
   "omitted": [
     "raw output",
     "journal text",
     "process commands",
     "user names",
-    "identifiers",
+    "observation identifiers (target provenance retained separately)",
     "environment",
     "credential files",
-    "SSH material",
+    "SSH material (target provenance retained separately)",
     "prior operation history"
   ],
   "files": {
@@ -21,7 +22,8 @@
     "resources.json": "9ed436bef091b229cdb9326c7e9abd958f8452bdcb9fbf4e817dcdea048de2c1",
     "services.json": "f19e84aafa033dbd3e6566f3d1ad790b2993fafdb2e54f643ade58ddef8c8ea6",
     "storage.json": "c6ada106856b4f3cf98264ba3552ca9250366a8ef765601f98ce9badcecf2bb4",
-    "summary.md": "597bb5cc5c926179ef97f4bd3fb1c7707b793d9965024435d36bd652fc69f460",
-    "system.json": "bee2004f2cd5ffce663419401579466ade1b31cd3860cad38d2a2f5d87ebcfb7"
+    "summary.md": "26f1b7deac6c869cd06b0064c8e65594740f0a99c63255e2d82bf98a5f20544b",
+    "system.json": "bee2004f2cd5ffce663419401579466ade1b31cd3860cad38d2a2f5d87ebcfb7",
+    "target.json": "03cc6805de2c788cd1b1ab603e94b2fc08d46eb14fa82439ba1aaade6e0a457e"
   }
 }

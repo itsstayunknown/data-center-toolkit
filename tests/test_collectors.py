@@ -85,12 +85,14 @@ def test_no_route_and_down_interface() -> None:
 def test_live_runner_timeout_missing_and_no_shell(monkeypatch: pytest.MonkeyPatch) -> None:
     import subprocess
 
-    def timeout(*args: object, **kwargs: object) -> None:
-        assert kwargs["shell"] is False
-        assert kwargs["timeout"] == 0.01
-        raise subprocess.TimeoutExpired("uname", 0.01)
+    # The bounded runner now uses Popen and incremental stream draining.
+    original = subprocess.Popen
 
-    monkeypatch.setattr(subprocess, "run", timeout)
+    def slow(*args: object, **kwargs: object) -> subprocess.Popen[bytes]:
+        assert kwargs["shell"] is False
+        return original(("/bin/sleep", "2"), **kwargs)  # type: ignore[arg-type]
+
+    monkeypatch.setattr(subprocess, "Popen", slow)
     assert "timeout" in (LinuxBackend().run(("uname",), timeout=0.01).error or "")
     assert LinuxBackend().run(("dct-command-that-does-not-exist",)).error == "missing command"
 

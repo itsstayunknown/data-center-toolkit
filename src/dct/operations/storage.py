@@ -49,6 +49,8 @@ def proposed_target(device: Device) -> str:
 
 
 def propose(backend: Backend, storage: Storage, path: str) -> Proposal:
+    if backend.target.is_remote:
+        raise Refused("Remote state-changing operations are forbidden; local-only")
     if not storage.complete:
         raise Refused("Complete lsblk and findmnt evidence is required")
     matching = [d for d in storage.devices if d.path == path]
@@ -118,6 +120,8 @@ def propose(backend: Backend, storage: Storage, path: str) -> Proposal:
 
 
 def execute(backend: Backend, proposal: Proposal, *, confirmed: bool) -> Outcome:
+    if backend.target.is_remote:
+        raise Refused("Remote state-changing operations are forbidden; local-only")
     if not confirmed:
         raise Refused("Explicit confirmation is required")
     current, _, _ = collect_storage(backend)

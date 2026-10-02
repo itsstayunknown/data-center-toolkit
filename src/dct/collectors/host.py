@@ -4,8 +4,8 @@ from dataclasses import replace
 from datetime import UTC, datetime
 from typing import Any
 
-from dct.collectors.backend import Backend
 from dct.collectors.storage import collect_storage
+from dct.executors import Executor
 from dct.models.evidence import Address, CommandResult, Host, Network, Snapshot
 
 IP_ADDRESS = ("ip", "-j", "address", "show")
@@ -14,7 +14,7 @@ TIME = ("timedatectl", "show", "--property=Timezone", "--property=NTPSynchronize
 DNS = ("resolvectl", "dns")
 
 
-def collect(backend: Backend) -> Snapshot:
+def collect(backend: Executor) -> Snapshot:
     commands: list[CommandResult] = []
     notes: list[str] = []
 

@@ -18,4 +18,4 @@ Actions Taken: read-only inspection and local export.
 State Changes: none performed by triage. Prior mount/unmount operations are not included; technician must record them here.
 Current State: findings apply to collection time only.
 Recommended Next Step: inspect the affected domain; establish owner and gather logs before action.
-Escalation Notes: identifiers, journal text and process names omitted; complete symptom and impact before sharing.
+Escalation Notes: observation identifiers, journal text and process names omitted; complete symptom and impact before sharing.

@@ -13,6 +13,7 @@ from dct.models.evidence import CommandResult
 
 class RecordingBackend(LinuxBackend):
     def __init__(self) -> None:
+        super().__init__()
         self.calls: list[CommandResult] = []
 
     def run(self, argv: tuple[str, ...], timeout: float = 8) -> CommandResult:
@@ -64,7 +65,8 @@ def main() -> None:
         "state_changes": False,
         "commands": [
             {
-                "argv": r.argv,
+                "command": r.argv[0],
+                "argument_count": len(r.argv) - 1,
                 "returncode": r.returncode,
                 "error": r.error,
                 "stdout_bytes": len(r.stdout.encode()),

@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from dct.collectors.network import NetworkEvidence
     from dct.collectors.resources import Resources
     from dct.collectors.services import Services
+    from dct.targets import Target
 
 
 class OperationClass(StrEnum):
@@ -32,6 +33,10 @@ class CommandResult:
     stderr: str = ""
     returncode: int | None = None
     error: str | None = None
+
+    target_id: str | None = None
+    truncated: bool = False
+    failure: str | None = None
 
     @property
     def ok(self) -> bool:
@@ -120,6 +125,7 @@ class Snapshot:
     storage: Storage
     commands: tuple[CommandResult, ...] = ()
     notes: tuple[str, ...] = ()
+    target: "Target | None" = None
     schema_version: int = 2
     resources: "Resources | None" = None
     services: "Services | None" = None

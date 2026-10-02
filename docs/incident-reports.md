@@ -9,6 +9,7 @@ time and schema version 2.
 
 | File | Exported evidence |
 | --- | --- |
+| `target.json` | Explicit selected target ID, display name, hostname, address and connection type; SSH user, tags, metadata and jump configuration omitted |
 | `summary.md` | Incident template and sanitized numerical and categorical findings; symptom/impact need technician input |
 | `system.json` | OS/kernel/architecture, uptime, synchronization; hostname redacted |
 | `resources.json` | CPU/load/topology, RAM/swap, PSI, process counts and generic top-consumer metrics; cgroup identity redacted |
@@ -17,7 +18,7 @@ time and schema version 2.
 | `storage.json` | Generic device labels, sizes/types/filesystems/read-only flags, mount capacity and drive health metrics; labels/UUIDs/paths redacted |
 | `gpu.json` | Model/driver, CUDA-reported compatibility, temperature/power/utilization/VRAM/ECC, generic compute memory metrics; PCI identity and ownership redacted |
 | `findings.json` | Severity, domain, code, sanitized numerical and categorical observation, normalized evidence reference, confidence, next action, state-change status |
-| `manifest.json` | Collection time, schema, sanitization scope, omission list, SHA-256 for every other evidence file including summary |
+| `manifest.json` | Collection time, schema, sanitization scope, observation-identifier omission list, SHA-256 for every other evidence file including summary |
 
 Unavailable domains declare availability or contain unknown/null evidence instead of fabricated
 healthy values. A SHA-256 manifest detects changes when compared with a trusted original; it
@@ -26,7 +27,9 @@ is not a signature or proof of provenance. The manifest does not hash itself.
 ## What stays out
 
 No environment-variable dump, credential file, SSH private material, raw command output,
-journal text, process command/name, user name or raw host identifier is exported. Service
+journal text, process command/name or SSH user is exported. Selected target identity
+is deliberately retained in `target.json` for provenance; this includes hostname and
+address. Review that file before sharing and use your approved disclosure process. Service
 names, network addresses/MACs, paths, labels, UUIDs and GPU PCI identifiers are redacted or
 replaced with generic labels. Drive-health entries share inventory device aliases. Diagnostic messages can embed identity, so exported observations
 are sanitized numerical and categorical rather than copies of local detail text.
@@ -53,7 +56,8 @@ Recommended Next Step:
 Escalation Notes:
 ```
 
-Add the symptom, impact, incident timing and approved identifying context manually. Link the
+The summary references selected target provenance in `target.json`. Add the symptom,
+impact, incident timing and approved identifying context manually. Link the
 relevant normalized JSON evidence. Sanitization reduces identifying detail; a bundle does not
 replace authorized access to the local evidence. It reflects collection time, not subsequent
 host state.

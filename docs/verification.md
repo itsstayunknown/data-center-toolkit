@@ -1,106 +1,127 @@
-# v0.1 release candidate verification
+# v0.1.0 candidate verification
 
-Baseline: clean `main` at `4f5b337`. No GitHub publication. All tests use injected
-fixtures; mount/unmount calls in tests are recorded fake calls, never live writes.
+This record covers the final pre-publication lane from the clean local-only
+candidate. No repository publication, remote creation, push, release or PyPI upload
+was authorized. Tests use synthetic executors; operation tests never change a host.
 
 ## Primary checks
 
-Python 3.12.13, Textual 8.2.8:
+Python 3.12.13, Textual 8.2.8. Final exact results are recorded below after integration:
 
-- `.venv/bin/pytest -q`: 201 passed in 36.63 seconds.
-- `.venv/bin/ruff check .`: passed.
-- `.venv/bin/ruff format --check .`: passed (47 Python files).
-- `.venv/bin/mypy --strict src`: passed (25 source files).
-- `.venv/bin/python -m build --no-isolation`: sdist and wheel built successfully.
-- `.venv/bin/python -m dct --help`: passed.
-- Synthetic full incident export: all nine files generated; manifest and secret
-  exclusion exercised by tests. Sample in `examples/incident/`.
+- `.venv/bin/pytest -q`: **294 passed in 45.17 seconds**, no skips. All original
+  regression behaviors preserved; the timeout test now exercises incremental Popen.
+- `.venv/bin/ruff check .`: PASS.
+- `.venv/bin/ruff format --check .`: PASS, 56 Python files.
+- `.venv/bin/mypy`: strict PASS, 28 source files.
+- `.venv/bin/python -m build --no-isolation`: final sdist and wheel PASS.
+- Clean standard `python -m pip install <wheel>` on Python 3.14: PASS. Installed
+  `dct --help`, fixture export, and fixture/default-local TUI launch/navigation
+  passed from outside the checkout. Python 3.12 isolated wheel smoke also passed.
+- Wheel (33 members) and sdist (162 members) artifact-content/privacy audit: PASS;
+  no ignored local reports, environments, Git directory or identifying patterns.
+- Release fixture matrix: passing, covering all 32 synthetic scenarios.
 
-The sandbox reproduces an interpreter shutdown hang even with a standalone
-`asyncio.to_thread(lambda: 1)`. The same no-op exits normally outside the sandbox.
-UI tests and screenshot generation therefore ran outside the sandbox. Tests were
-not weakened or skipped. CI Python 3.11–3.14 jobs have not been run remotely.
+The sandbox blocks asyncio's UNIX wakeup socket with EPERM, including a standalone
+`asyncio.to_thread(lambda: None)`. UI tests and screenshots therefore run outside
+that restriction. No tests are skipped or weakened to accommodate it. CI Python
+3.11–3.14 jobs have not been executed on GitHub.
 
-## Fixture coverage
+## Synthetic and executor coverage
 
-32 complete scenarios under `tests/fixtures/release/`; the executable matrix is
-`tests/test_release_matrix.py`. Seven platform identities: RHEL, Rocky, AlmaLinux,
-CentOS Stream, Ubuntu, Debian and Arch. Fixtures include all requested resource,
-service, interface/carrier/address/route/DNS/counter, capacity/busy/unmounted,
-SMART/NVMe, NVIDIA and missing-capability failures. Focused domain fixtures and
-malformed-data regressions exercise additional parser/unknown behavior. Existing
-operation tests retain stale-proposal, busy/system/nested-mount and privilege checks.
+The release matrix covers RHEL, Rocky, AlmaLinux, CentOS Stream, Ubuntu, Debian and
+Arch. These are fixture identities, not actual distribution certification. Domain
+fixtures exercise adverse, missing, denied, partial and malformed evidence.
 
-Static CPU fixtures intentionally cannot classify an instantaneous sample; DNS is
-unknown until explicitly tested. Synthetic health is not real distro certification.
-See [platform support](platform-support.md).
+Executor/inventory regressions cover local/fixture access, target attribution,
+OpenSSH command construction, config/agent delegation, YAML/config discovery,
+malformed/duplicate/conflicting records, missing target, authentication/host-key/
+DNS/unreachable/timeout/missing-command/permission/unknown failures, bounded output,
+partial output on timeout, cancellation/quiescence, remote write rejection and
+reports. Real system OpenSSH `-G` tests evaluate configured and explicit multi-hop
+ProxyJump without connecting; they verify launcher reuse and mandatory hop options.
+Synthetic transports exercise the shared SSH pipeline including GPU and cgroup reads.
+Real configuration evaluation also verifies known_hosts updates, loopback bypass,
+DNS trust overrides and permissive multiplexing are disabled.
 
-## Local Arch read-only qualification
+Keyboard tests cover target search and session recents, paging, switching,
+cancellation, stale workers, fixture isolation, Esc/Home, section search, help,
+remote target identity on every domain/report screen and local-only mount refusal.
+Tests exercise 80×24, 100×32 and 160×48 terminals. No fleet command fan-out exists.
 
-Command: `.venv/bin/python scripts/qualify.py`, outside the sandbox so `/proc/1`
-and tools refer to the actual host. Exact argv, exit status, output byte counts,
-capability summary and UTC collection time are recorded in
-[local-arch.json](qualification/local-arch.json). No raw host output is committed.
+## Local read-only qualification
 
-Observed Arch, x86_64, kernel `7.2.7-arch1-1`, systemd (54 services), process inventory,
-ten interfaces, complete eight-device block inventory, usable CPU delta sample,
-one NVIDIA GPU, and bounded selected journal inspection. Collector/diagnostic
-execution passed without a crash; warnings/critical findings describe observed
-host evidence, not a failed qualification check. No findings caused an operation.
+Procedure: `python scripts/qualify.py`, outside the process/network sandbox.
+[local-arch.json](qualification/local-arch.json) records OS, capability and command
+status/byte counts; arbitrary command arguments and raw output are omitted.
 
-Limits/failures:
+Actual Arch Linux x86_64: identity/resources, systemd (54 services), ten network
+interfaces, complete eight-device block inventory, one NVIDIA GPU, Quick Triage
+and bounded selected journal inspection completed without a collector crash.
+Warnings and critical findings describe host evidence, not failed qualification.
+Inspection never acted on findings.
 
-- `resolvectl dns` and `resolvectl status --no-pager` exited 1: the resolver service
-  socket is absent. `/etc/resolv.conf` is the fallback; resolution remains untested.
-- SMART reads exited 2 on physical disks; zram returned 1 (unsupported). NVMe
-  health reads exited 1 and reported permission denied. All drive health remained
-  UNKNOWN. No inspection privilege escalation or self-test was attempted.
-- Four protected Docker mount capacity queries exited 1. Their capacity remains
-  unknown. Successful local capacity reads are retained separately.
-- Socket process ownership and journal coverage are subject to ordinary-user
-  permissions. The selected journal returned 17 characters (no recent warning entries).
-- No gateway/DNS/external active probe, privileged mount/unmount, service change,
-  GPU reset, process termination, configuration edit or destructive test was run.
-- Only this host's read-only paths have been exercised. No RHEL-family, Ubuntu,
-  Debian or other Arch release is claimed qualified; mount/unmount is fixture-only.
+Limits: resolver service queries failed; resolv.conf remains fallback, DNS untested.
+SMART/NVMe health and some protected mount-capacity queries were unavailable/denied;
+health remained UNKNOWN. No sudo, drive tests, active probes, mount/unmount, service
+change, process kill, GPU reset or configuration change occurred. Local mount/unmount
+remains fixture-qualified only. See the JSON for exact command statuses.
 
-## Explicit usability procedures
+## One remote Ubuntu qualification
 
-Headless Textual Pilot checks at 80×24, 100×32 and 160×48 cover keyboard-only
-navigation, Enter into process/service detail, one-level and repeated Esc, Home,
-search aliases and typing, contextual help, evidence scrolling and quit. Mouse
-selection uses the rendered option content region. Additional checks exercise
-long process/service names, a 200-device inventory, missing utilities/systemd and
-machines without NVIDIA hardware. No text-size reduction is used.
+[remote-ubuntu.json](qualification/remote-ubuntu.json) records the authorized private
+qualification host with its identifying name/address/user omitted from public content.
+Existing OpenSSH alias access succeeded without access/configuration changes.
 
-Synthetic SVGs in `docs/screenshots/` cover Home, identity, resources, services,
-network, storage, GPU and triage, with constrained/large variants. Generate all
-screenshot sizes with `.venv/bin/python scripts/screenshots.py`; SVGs were
-rendered using `rsvg-convert` and visually inspected. Detail pages keep choices
-separate from scrolling evidence; PgUp/PgDn scroll evidence. Real interactive
-terminal/SSH/mouse-emulator variations remain a founder-review limitation.
+Actual Ubuntu 26.04 x86_64: identity, resources, systemd (69 services), links,
+addresses, routes, listeners, complete storage inventory and Quick Triage completed
+read-only. Available versus unavailable telemetry remains explicit in evidence.
+Per-command exit codes, normalized failure class and byte counts are recorded.
+Initial SSH probe took 0.436 seconds; full collection took 34.242 seconds. Missing
+SMART/NVIDIA tooling, absent optional proc/sysfs values and twelve permission-denied
+capacity reads remain explicit gaps. No command timed out or exceeded its output bound.
+No sudo, installation, agent copy, host file write, service/mount/network/package
+change or active connectivity probe was performed.
+
+This is one Ubuntu host, not a general Ubuntu or enterprise qualification. Live
+bastion chains, certificates, alternate authentication policies, interrupted
+network sessions and other host/kernel/hardware combinations remain unqualified.
+The executor uses an OpenSSH process per command/file read; collection latency
+includes repeated connections. No persistent connection pool or fleet execution
+is implemented.
+
+## Presentation and privacy
+
+Synthetic screenshots cover Home, Triage, Identity, Resources, Services, Network,
+Storage, GPU, remote indicator and an illustrative incident summary, with small/
+large-terminal variants. SVGs were rendered and visually inspected. The incident
+illustration is not an additional report-preview feature. Real terminal-emulator,
+mouse and screen-reader variations remain a founder-review limitation.
+
+The tree and reachable history were independently scanned for private identities,
+paths, hostnames/IPs, credentials and proprietary material. Two unpublished commits
+were rewritten to remove personal metadata and identifying qualification argv.
+Recovery data remains outside the repository and publication refs. See
+[publication audit](publication-audit.md) for method and limits. Target provenance
+in user reports is intentionally retained and disclosed; review before sharing.
 
 ## Independent review
 
-Fresh read-only code, safety and UX reviews inspected the full implementation,
-fixture tests, sanitized sample bundle and terminal-size screenshots. Review findings
-were resolved with regression coverage: partial/failed telemetry must preserve valid
-adverse observations and UNKNOWN gaps; IPv6 probes require correct interface scope;
-SMART/NVMe fusion retains complementary metrics; invalid percentages and interrupted
-commands preserve valid evidence with explicit coverage gaps; journal display is byte-bounded;
-exports allowlist categorical states and preserve source completeness; filtered
-keyboard selection, contextual help and nested breadcrumbs follow the navigation
-contract. Constrained Home retains context while its options scroll.
+Fresh independent code, security/safety and UX/public-content reviews found target
+identity collisions, picker paging, scoped gateway probes, omitted-port behavior,
+implicit-jump safety, connection-side effects and report-sharing disclosure issues.
+Clean Python 3.14 TUI smoke exposed a startup mount race; collection now waits for
+Home to mount, with immediate-collection regression coverage. Changes were reverified.
 
-Final primary verification includes mixed valid/malformed GPU and network inventories,
-incomplete NVMe metrics, seven-platform scenario fixtures and the actual read-only
-Arch run. Fresh comprehensive code/safety/UX acceptance review completed; the
-final fresh storage review found no material findings after the temperature and
-partial-evidence regressions. All material review findings are resolved. Reviewers
-inspected code/artifacts independently; individual reviewers did not rerun every
-primary check or perform live/privileged qualification. The final build and full
-suite passed after the last behavioral change. No required review remains open.
+Final fresh read-only acceptance found no material code, safety or UI defects.
+Independent executor/inventory tests: 76 passed; target UI tests: 17 passed. Final
+UX/public-content/privacy/history review found no material blocker and independently
+ran 51 report/inventory tests, rendered screenshots, checked report hashes and reviewed
+both reachable historical commits. The factual qualification narrative is aligned
+with the final JSON. All material findings are resolved; no required review remains
+open. Reviewers did not independently reproduce live qualifications or every primary
+check. Final artifact installation/content checks and committed clean status are
+primary-agent checks.
 
-The reviewed candidate is ready for founder review, subject to the explicit
-platform, permissions and interactive-terminal limitations above. No publication
-or production-readiness claim is made.
+The candidate is PUBLICATION_READY for founder authorization, with the explicit
+platform, host-permission and trusted-custom-SSH-configuration limits above. This
+status is neither publication nor an enterprise production-readiness claim.

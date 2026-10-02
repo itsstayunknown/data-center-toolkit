@@ -49,3 +49,25 @@ before presenting a report as an incident. See [incident reports](incident-repor
 An optional asciinema recording is separate from runtime requirements. Record fixture mode,
 review the capture, and do not publish until founder review. Consult
 [verification](verification.md) for the actual release checks and recorded UX results.
+
+## Remote indicator and incident summary
+
+[remote.svg](screenshots/remote.svg) demonstrates a synthetic selected remote target.
+[incident.svg](screenshots/incident.svg) illustrates an incident summary from synthetic
+findings and bundle filenames; it is not an additional report-preview screen. The target
+name and documentation IP in these screenshots are fictional. Fixture mode never
+connects over SSH. Press `t` to inspect target selection, then Esc to return one level.
+Do not use live remote evidence for public screenshots.
+
+## Optional local terminal recording
+
+If asciinema is already installed, record locally without creating an account:
+
+```sh
+asciinema rec --command 'python -m dct --fixture tests/fixtures/release/arch_gpu_workstation.json' dct-demo.cast
+```
+
+Follow the walkthrough above, quit DCT, then review with `asciinema play dct-demo.cast`.
+Do not upload the recording automatically. Keep real inventories, shell history,
+SSH prompts and live host information out of the recording. A fixture-only walkthrough
+is sufficient to demonstrate the interface without privileged operations.

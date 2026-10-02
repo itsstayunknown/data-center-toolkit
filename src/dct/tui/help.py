@@ -83,8 +83,8 @@ HELP = {
     "Incident Report": (
         "Sanitized incident bundle",
         "Exports allowlisted normalized evidence and file hashes. Pro"
-        "cess arguments and journal text are excluded. Review before "
-        "sharing.",
+        "cess arguments and journal text are excluded. Target identity is retained "
+        "in target.json. Review before sharing.",
         "docs/incident-reports.md",
     ),
 }

@@ -10,11 +10,11 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
-dependencies = ["textual>=1.0,<9", "rich>=13.9,<15"]
+dependencies = ["textual>=1.0,<9", "rich>=13.9,<15", "PyYAML>=6,<7"]
 classifiers = ["Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.9", "mypy>=1.14"]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.9", "mypy>=1.14", "types-PyYAML>=6", "build>=1.2", "hatchling>=1.26"]
 
 [project.scripts]
 dct = "dct.__main__:main"

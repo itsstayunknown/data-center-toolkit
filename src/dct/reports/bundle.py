@@ -351,6 +351,15 @@ def export(snapshot: Snapshot, destination: Path) -> Path:
         "gpu.json": gpu,
         "findings.json": findings,
     }
+    if snapshot.target is not None:
+        target = snapshot.target
+        documents["target.json"] = {
+            "id": target.id,
+            "display_name": target.display_name,
+            "hostname": target.hostname,
+            "address": target.address,
+            "connection_type": target.connection_type.value,
+        }
     for name, value in documents.items():
         (destination / name).write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
     summary = (
@@ -365,7 +374,7 @@ def export(snapshot: Snapshot, destination: Path) -> Path:
         "ply to collection time only.\n"
         "Recommended Next Step: inspect the affected domain; establis"
         "h owner and gather logs before action.\n"
-        "Escalation Notes: identifiers, journal text and process name"
+        "Escalation Notes: observation identifiers, journal text and process name"
         "s omitted; complete symptom and impact before sharing.\n"
     )
     (destination / "summary.md").write_text(summary)
@@ -373,16 +382,17 @@ def export(snapshot: Snapshot, destination: Path) -> Path:
         "schema_version": snapshot.schema_version,
         "collected_at": snapshot.collected_at,
         "sanitized": True,
+        "target_identity_retained": snapshot.target is not None,
         "scope": "read-only host/resources/services/network/storage/GPU normalized allowlist",
         "omitted": [
             "raw output",
             "journal text",
             "process commands",
             "user names",
-            "identifiers",
+            "observation identifiers (target provenance retained separately)",
             "environment",
             "credential files",
-            "SSH material",
+            "SSH material (target provenance retained separately)",
             "prior operation history",
         ],
         "files": {

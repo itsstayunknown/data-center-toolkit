@@ -5,7 +5,7 @@ import io
 import re
 from dataclasses import dataclass, replace
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Finding, Severity
 
 GPU_QUERY = (
@@ -66,7 +66,7 @@ def _number(value: str) -> float | None:
         return None
 
 
-def collect_gpu(backend: Backend) -> GPUReport:
+def collect_gpu(backend: Executor) -> GPUReport:
     if backend.resolve("nvidia-smi") is None:
         return GPUReport(notes=("NVIDIA diagnostics unavailable: nvidia-smi not installed",))
     result = backend.run(GPU_QUERY)
@@ -147,7 +147,7 @@ def _append_gpu(row: list[str], gpus: list[GPU]) -> None:
     )
 
 
-def _append_process(row: list[str], processes: list[ComputeProcess], backend: Backend) -> None:
+def _append_process(row: list[str], processes: list[ComputeProcess], backend: Executor) -> None:
     if len(row) != 4:
         raise ValueError("unexpected compute process column count")
     pid = int(row[1])

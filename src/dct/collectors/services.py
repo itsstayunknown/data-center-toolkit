@@ -3,7 +3,7 @@
 import re
 from dataclasses import dataclass, replace
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Finding, Severity
 
 PROPERTIES = (
@@ -99,7 +99,7 @@ def _parse(text: str, notes: list[str] | None = None) -> tuple[Service, ...]:
     return tuple(units)
 
 
-def collect_services(backend: Backend) -> Services:
+def collect_services(backend: Executor) -> Services:
     # PID 1 must actually be systemd; presence of a client binary is insufficient.
     if (backend.read("/proc/1/comm") or "").strip() != "systemd":
         return Services(notes=("Systemd capability unavailable: PID 1 is not systemd",))
@@ -120,7 +120,7 @@ def collect_services(backend: Backend) -> Services:
     return Services(True, units, (result,), tuple(notes))
 
 
-def service_detail(backend: Backend, unit: str) -> ServiceDetail:
+def service_detail(backend: Executor, unit: str) -> ServiceDetail:
     # Unit name is a data argument, never an option or wildcard expression.
     if not re.fullmatch(r"[A-Za-z0-9_@:.\\-]+\.service", unit) or unit.startswith("-"):
         return ServiceDetail(notes=("Invalid service unit name",))

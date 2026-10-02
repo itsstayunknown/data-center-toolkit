@@ -5,7 +5,7 @@ import re
 from dataclasses import dataclass, replace
 from typing import Any
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Finding, Severity, Storage
 
 
@@ -208,7 +208,7 @@ def _merge(smart: DiskHealth, nvme: DiskHealth) -> DiskHealth:
     )
 
 
-def collect(backend: Backend, storage: Storage) -> DiskHealthEvidence:
+def collect(backend: Executor, storage: Storage) -> DiskHealthEvidence:
     commands: list[CommandResult] = []
     devices: list[DiskHealth] = []
     notes: list[str] = []

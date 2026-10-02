@@ -3,15 +3,16 @@
 from dataclasses import replace
 
 from dct.collectors import disk_health, gpu, network, resources, services
-from dct.collectors.backend import Backend
 from dct.collectors.host import collect as collect_host
+from dct.executors import Executor
 from dct.models.evidence import Snapshot
 
 
-def collect(backend: Backend) -> Snapshot:
+def collect(backend: Executor) -> Snapshot:
     baseline = collect_host(backend)
     return replace(
         baseline,
+        target=backend.target,
         resources=resources.collect_resources(backend),
         services=services.collect_services(backend),
         network_details=network.collect(backend),

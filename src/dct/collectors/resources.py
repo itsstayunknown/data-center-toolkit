@@ -3,7 +3,7 @@
 from dataclasses import dataclass, replace
 from math import isfinite
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Finding, Severity
 
 PS = ("ps", "-eo", "pid=,ppid=,user=,pcpu=,rss=,etimes=,comm=", "--sort=-pcpu")
@@ -67,7 +67,7 @@ def _numbers(text: str) -> tuple[float, ...]:
         return ()
 
 
-def collect_resources(backend: Backend) -> Resources:
+def collect_resources(backend: Executor) -> Resources:
     notes: list[str] = []
     memory: dict[str, int] = {}
     for line in (backend.read("/proc/meminfo") or "").splitlines():
@@ -209,7 +209,7 @@ def collect_resources(backend: Backend) -> Resources:
     )
 
 
-def process_detail(backend: Backend, pid: int) -> Process | None:
+def process_detail(backend: Executor, pid: int) -> Process | None:
     if pid <= 0:
         return None
     process = next((p for p in collect_resources(backend).processes if p.pid == pid), None)

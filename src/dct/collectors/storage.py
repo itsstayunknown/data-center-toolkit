@@ -2,7 +2,7 @@ import json
 import re
 from typing import Any
 
-from dct.collectors.backend import Backend
+from dct.executors import Executor
 from dct.models.evidence import CommandResult, Device, Mount, Storage
 
 LSBLK = (
@@ -16,7 +16,9 @@ LSBLK = (
 FINDMNT = ("findmnt", "--json", "--output", "SOURCE,TARGET,FSTYPE,OPTIONS,MAJ:MIN")
 
 
-def collect_storage(backend: Backend) -> tuple[Storage, tuple[CommandResult, ...], tuple[str, ...]]:
+def collect_storage(
+    backend: Executor,
+) -> tuple[Storage, tuple[CommandResult, ...], tuple[str, ...]]:
     block = backend.run(LSBLK)
     mounts = backend.run(FINDMNT)
     notes: list[str] = []

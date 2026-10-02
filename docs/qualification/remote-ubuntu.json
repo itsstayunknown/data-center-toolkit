@@ -1,0 +1,887 @@
+{
+  "qualified_at": "2026-10-02T10:48:39.144726+00:00",
+  "scope": "one remote host; existing OpenSSH access; read-only; no sudo or active probes",
+  "state_changes": false,
+  "probe_latency_seconds": 0.436,
+  "existing_config_alias": true,
+  "connection": "connected",
+  "limitations": [],
+  "collection_seconds": 34.242,
+  "distro_id": "ubuntu",
+  "version": "26.04",
+  "architecture": "x86_64",
+  "resources_available": true,
+  "services_available": true,
+  "services_observed": 69,
+  "network_coverage": {
+    "links_available": true,
+    "addresses_available": true,
+    "routes_available": true,
+    "listeners_available": true
+  },
+  "storage_complete": true,
+  "gpu_available": false,
+  "finding_counts": {
+    "HEALTHY": 1,
+    "WARNING": 4,
+    "CRITICAL": 3,
+    "UNKNOWN": 6
+  },
+  "commands": [
+    {
+      "command": "uname",
+      "argument_count": 1,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 17,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 406,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "uname",
+      "argument_count": 1,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 17,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "uname",
+      "argument_count": 1,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 7,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 23,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 29,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 1615,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "timedatectl",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 37,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 10018,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 124,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "resolvectl",
+      "argument_count": 1,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 471,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "lsblk",
+      "argument_count": 5,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 1644,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "findmnt",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 26451,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 52,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 44,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 44,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "df",
+      "argument_count": 4,
+      "returncode": 1,
+      "failure": "permission_denied",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 1615,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 23,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 29,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 18570,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 5299,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ps",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 17054,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 5299,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 103,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 112,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 114,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 50,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 108
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 104
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 101
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 106
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 102
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 8,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "systemctl",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 41727,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 4,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 9408,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 10018,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 5,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 10769,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 6,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 7051,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ip",
+      "argument_count": 3,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2994,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 47
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 5,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 1,
+      "failure": "unknown",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 54
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 3,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 2,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 3,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "cat",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 936,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "resolvectl",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 5084,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "ss",
+      "argument_count": 2,
+      "returncode": 0,
+      "failure": null,
+      "truncated": false,
+      "stdout_bytes": 3045,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "sh",
+      "argument_count": 2,
+      "returncode": 127,
+      "failure": "command_unavailable",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "command": "smartctl",
+      "argument_count": 4,
+      "returncode": 127,
+      "failure": "command_unavailable",
+      "truncated": false,
+      "stdout_bytes": 0,
+      "stderr_bytes": 91
+    }
+  ]
+}
