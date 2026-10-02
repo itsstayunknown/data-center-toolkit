@@ -1,0 +1,7 @@
+{
+  "commands": {
+    "nvme smart-log /dev/nvme0n1 --output-format=json": {
+      "stdout": "{\"critical_warning\": 0, \"media_errors\": 0, \"temperature\": 310, \"avail_spare\": 95, \"spare_thresh\": 10}"
+    }
+  }
+}

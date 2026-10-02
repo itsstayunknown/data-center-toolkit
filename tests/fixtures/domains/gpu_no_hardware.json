@@ -1,0 +1,8 @@
+{
+  "commands": {
+    "nvidia-smi --query-gpu=index,name,driver_version,temperature.gpu,power.draw,power.limit,utilization.gpu,memory.total,memory.used,memory.free,pci.bus_id,pstate,ecc.errors.uncorrected.aggregate.total --format=csv,noheader,nounits": {
+      "returncode": 6,
+      "stderr": "No devices were found"
+    }
+  }
+}

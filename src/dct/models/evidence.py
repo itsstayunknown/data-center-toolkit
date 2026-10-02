@@ -2,6 +2,14 @@
 
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from dct.collectors.disk_health import DiskHealthEvidence
+    from dct.collectors.gpu import GPUReport
+    from dct.collectors.network import NetworkEvidence
+    from dct.collectors.resources import Resources
+    from dct.collectors.services import Services
 
 
 class OperationClass(StrEnum):
@@ -11,6 +19,7 @@ class OperationClass(StrEnum):
 
 
 class Severity(StrEnum):
+    UNKNOWN = "UNKNOWN"
     HEALTHY = "HEALTHY"
     WARNING = "WARNING"
     CRITICAL = "CRITICAL"
@@ -99,6 +108,9 @@ class Finding:
     code: str
     message: str
     evidence: str
+    confidence: str = "moderate"
+    next_step: str = "Inspect the referenced evidence and confirm workload ownership."
+    state_changed: bool = False
 
 
 @dataclass(frozen=True)
@@ -108,4 +120,9 @@ class Snapshot:
     storage: Storage
     commands: tuple[CommandResult, ...] = ()
     notes: tuple[str, ...] = ()
-    schema_version: int = 1
+    schema_version: int = 2
+    resources: "Resources | None" = None
+    services: "Services | None" = None
+    network_details: "NetworkEvidence | None" = None
+    gpu: "GPUReport | None" = None
+    disk_health: "DiskHealthEvidence | None" = None

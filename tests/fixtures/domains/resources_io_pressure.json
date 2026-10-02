@@ -1,0 +1,21 @@
+{
+  "files": {
+    "/proc/meminfo": "MemTotal: 1000000 kB\nMemAvailable: 800000 kB\nSwapTotal: 100000 kB\nSwapFree: 100000 kB\n",
+    "/proc/uptime": "1234 555",
+    "/proc/loadavg": "0.3 0.2 0.1 1/20 444",
+    "/proc/stat": "cpu 100 0 10 1000 10 0 0 0 0 0\n",
+    "/proc/cpuinfo": "processor : 0\nphysical id : 0\ncore id : 0\n\nprocessor : 1\nphysical id : 0\ncore id : 0\n",
+    "/proc/pressure/cpu": "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+    "/proc/pressure/memory": "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+    "/proc/pressure/io": "some avg10=35.00 avg60=20.00 avg300=5.00 total=123\n",
+    "/proc/self/cgroup": "0::/workload\n",
+    "/sys/fs/cgroup/workload/memory.max": "1073741824",
+    "/sys/fs/cgroup/workload/cpu.max": "200000 100000",
+    "/proc/10/cgroup": "0::/workload\n"
+  },
+  "commands": {
+    "ps -eo pid=,ppid=,user=,pcpu=,rss=,etimes=,comm= --sort=-pcpu": {
+      "stdout": "10 1 tech 80.0 500000 120 worker\n20 1 root 5.0 10000 500 daemon\n"
+    }
+  }
+}

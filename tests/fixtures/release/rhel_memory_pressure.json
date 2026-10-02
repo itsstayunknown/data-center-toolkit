@@ -1,0 +1,126 @@
+{
+  "description": "Synthetic composed release fixture; exercises portable Linux interfaces, not real distribution qualification.",
+  "root": true,
+  "safe_targets": [
+    "/mnt/dct-sdb1"
+  ],
+  "files": {
+    "/etc/os-release": "ID=rhel\nNAME=\"Red Hat Enterprise Linux\"\nPRETTY_NAME=\"Red Hat Enterprise Linux\"\nVERSION_ID=\"9.5\"\n",
+    "/proc/sys/kernel/hostname": "example-server\n",
+    "/proc/uptime": "1234 555",
+    "/proc/loadavg": "0.3 0.2 0.1 1/20 444",
+    "/proc/meminfo": "MemTotal: 1000000 kB\nMemAvailable: 30000 kB\nSwapTotal: 100000 kB\nSwapFree: 100000 kB\n",
+    "/etc/resolv.conf": "nameserver 192.0.2.53\n",
+    "/etc/timezone": "Etc/UTC\n",
+    "/proc/stat": "cpu 100 0 10 1000 10 0 0 0 0 0\n",
+    "/proc/cpuinfo": "processor : 0\nphysical id : 0\ncore id : 0\n\nprocessor : 1\nphysical id : 0\ncore id : 0\n",
+    "/proc/pressure/cpu": "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+    "/proc/pressure/memory": "some avg10=35.00 avg60=20.00 avg300=5.00 total=123\n",
+    "/proc/pressure/io": "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+    "/proc/self/cgroup": "0::/workload\n",
+    "/sys/fs/cgroup/workload/memory.max": "1073741824",
+    "/sys/fs/cgroup/workload/cpu.max": "200000 100000",
+    "/proc/10/cgroup": "0::/workload\n",
+    "/proc/1/comm": "systemd\n",
+    "/sys/class/net/eth0/carrier": "1",
+    "/sys/class/net/eth0/speed": "1000"
+  },
+  "commands": {
+    "uname -r": {
+      "stdout": "6.8.0-example\n",
+      "returncode": 0
+    },
+    "uname -m": {
+      "stdout": "x86_64\n",
+      "returncode": 0
+    },
+    "timedatectl show --property=Timezone --property=NTPSynchronized": {
+      "stdout": "Timezone=Etc/UTC\nNTPSynchronized=yes\n",
+      "returncode": 0
+    },
+    "resolvectl dns": {
+      "stdout": "Global: 192.0.2.53\n",
+      "returncode": 0
+    },
+    "ip -j address show": {
+      "stdout": "[{\"ifname\": \"eth0\", \"addr_info\": [{\"local\": \"192.0.2.2\", \"prefixlen\": 24, \"family\": \"inet\"}]}]"
+    },
+    "ip -j route show default": {
+      "stdout": "[{\"dst\": \"default\", \"gateway\": \"192.0.2.1\", \"dev\": \"eth0\"}]",
+      "returncode": 0
+    },
+    "lsblk --json --bytes --tree --output PATH,TYPE,SIZE,FSTYPE,LABEL,UUID,RO,MAJ:MIN": {
+      "stdout": "{\"blockdevices\": [{\"path\": \"/dev/sda\", \"type\": \"disk\", \"size\": 107374182400, \"fstype\": null, \"label\": null, \"uuid\": null, \"ro\": false, \"maj:min\": \"8:0\", \"children\": [{\"path\": \"/dev/sda1\", \"type\": \"part\", \"size\": 107374182400, \"fstype\": \"xfs\", \"label\": \"system\", \"uuid\": \"synthetic-system\", \"ro\": false, \"maj:min\": \"8:1\"}]}, {\"path\": \"/dev/sdb\", \"type\": \"disk\", \"size\": 214748364800, \"fstype\": null, \"label\": null, \"uuid\": null, \"ro\": false, \"maj:min\": \"8:16\", \"children\": [{\"path\": \"/dev/sdb1\", \"type\": \"part\", \"size\": 214748364800, \"fstype\": \"ext4\", \"label\": \"synthetic-data\", \"uuid\": \"synthetic-data-uuid\", \"ro\": false, \"maj:min\": \"8:17\"}]}]}",
+      "returncode": 0
+    },
+    "findmnt --json --output SOURCE,TARGET,FSTYPE,OPTIONS,MAJ:MIN": {
+      "stdout": "{\"filesystems\": [{\"source\": \"/dev/sda1\", \"target\": \"/\", \"fstype\": \"xfs\", \"options\": \"rw,relatime\", \"maj:min\": \"8:1\"}]}",
+      "returncode": 0
+    },
+    "systemctl --failed --no-legend": {
+      "stdout": "",
+      "returncode": 0
+    },
+    "nvidia-smi --query-gpu=name,memory.total,memory.used --format=csv,noheader,nounits": {
+      "returncode": 1,
+      "stderr": "No devices found"
+    },
+    "ps -eo pid=,ppid=,user=,pcpu=,rss=,etimes=,comm= --sort=-pcpu": {
+      "stdout": "10 1 tech 80.0 500000 120 worker\n20 1 root 5.0 10000 500 daemon\n"
+    },
+    "systemctl show --no-pager --property=Id,LoadState,ActiveState,SubState,UnitFileState,MainPID,ExecMainStartTimestamp,ExecMainStatus,Result,User,Group,NRestarts,ExecStart,Requires,Wants,After *.service": {
+      "stdout": "Id=sshd.service\nLoadState=loaded\nActiveState=active\nSubState=running\nUnitFileState=enabled\nMainPID=23\nExecMainStartTimestamp=Fri 2026-10-02 12:00:00 UTC\nExecMainStatus=0\nResult=success\nUser=root\nGroup=root\nNRestarts=0\nExecStart={ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D ; }\nRequires=network.target\nWants=network-online.target\nAfter=network.target\n"
+    },
+    "ip -j -s link show": {
+      "stdout": "[{\"ifname\": \"eth0\", \"flags\": [\"UP\"], \"operstate\": \"UP\", \"mtu\": 1500, \"address\": \"00:11:22:33:44:55\", \"stats64\": {\"rx\": {\"bytes\": 10000, \"errors\": 0, \"dropped\": 0}, \"tx\": {\"bytes\": 20000, \"errors\": 0, \"dropped\": 0}}}]"
+    },
+    "ip -j route show table all": {
+      "stdout": "[{\"dst\": \"default\", \"gateway\": \"192.0.2.1\", \"dev\": \"eth0\"}]"
+    },
+    "ip -j -6 route show table all": {
+      "stdout": "[]"
+    },
+    "ip -j neighbor show": {
+      "stdout": "[]"
+    },
+    "ss -H -lntup": {
+      "stdout": "tcp LISTEN 0 128 0.0.0.0:22 *:*"
+    },
+    "resolvectl status --no-pager": {
+      "stdout": "Global\n Current DNS Server: 192.0.2.53\n"
+    },
+    "smartctl --json --all -- /dev/sda": {
+      "stdout": "{\"smart_status\": {\"passed\": true}, \"temperature\": {\"current\": 35}}",
+      "returncode": 0
+    },
+    "smartctl --json --all -- /dev/sdb": {
+      "stdout": "{\"smart_status\": {\"passed\": true}, \"temperature\": {\"current\": 35}}",
+      "returncode": 0
+    }
+  },
+  "usage": {
+    "/": {
+      "total": 100,
+      "available": 80
+    }
+  },
+  "binaries": {
+    "nvidia-smi": null
+  },
+  "expectations": {
+    "distro_id": "rhel",
+    "required_codes": [
+      "memory-pressure",
+      "available-ram"
+    ],
+    "required_unknown_codes": [
+      "cpu-sample",
+      "network.dns_unverified",
+      "gpu-unavailable"
+    ],
+    "no_warning_or_critical": false,
+    "state_changed": false,
+    "qualification": "fixture-only",
+    "adverse_code": "memory-pressure"
+  }
+}

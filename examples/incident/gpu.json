@@ -1,0 +1,27 @@
+{
+  "available": true,
+  "cuda_compatibility": "12.4",
+  "devices": [
+    {
+      "gpu": 0,
+      "model": "NVIDIA RTX",
+      "driver": "550.1",
+      "pci_bus": "[redacted]",
+      "temperature_c": 40.0,
+      "power_w": 70.0,
+      "power_limit_w": 200.0,
+      "utilization_percent": 80.0,
+      "memory_total_mib": 10000.0,
+      "memory_used_mib": 1000.0,
+      "memory_free_mib": 9000.0,
+      "ecc_uncorrected": null
+    }
+  ],
+  "compute_processes": [
+    {
+      "process": "compute-0",
+      "memory_mib": 1000.0,
+      "owner": "[redacted]"
+    }
+  ]
+}

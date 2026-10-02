@@ -1,23 +1,34 @@
 # DCT — Data Center Toolkit
 
+An evidence-first Linux TUI for data center technicians.
+
+Inspect hosts, troubleshoot services and networking, manage storage,
+diagnose GPU systems, and generate incident evidence without memorizing
+dozens of commands.
+
+**Simple on the surface. Evidence underneath.**
 **Logs before levers. Evidence before action.**
 
-DCT is an open-source, keyboard-first Linux terminal UI for data center technicians.
-It displays normalized evidence alongside the Linux commands that produced it.
+## v0.1 release candidate scope
 
-## Milestone 1
+DCT shows host identity, resource health and process details, systemd services and selected
+recent journal evidence, interfaces/routes/DNS/listeners, storage inventory and SMART/NVMe
+health, and NVIDIA GPU telemetry. Quick Triage combines the same collectors into findings
+with evidence, failure domain, confidence and next steps. Global search and contextual help
+make these tools accessible without memorizing the menu.
 
-Implemented scope: navigation, host identity, storage inventory, conservative mount/unmount,
-basic resource findings and sanitized incident export. All twelve home sections are visible;
-additional diagnostic domains are marked planned. DCT does not restart services or edit configs.
+Missing commands, unsupported hardware, denied access and incomplete telemetry remain
+**UNKNOWN**, never an invented healthy result. An unavailable NVIDIA utility is a capability
+gap rather than a GPU failure. Non-systemd init systems are explicitly unsupported for service
+inspection. External connectivity testing is optional and requires a chosen target.
 
-Target platforms: RHEL, Rocky, AlmaLinux, CentOS Stream, Ubuntu, Debian; Arch for development.
-Capability detection replaces package-manager assumptions. Synthetic tests cover distro-shaped
-data, but do not certify every distribution or release.
+The release candidate is intended for founder review after the checks recorded in
+[verification](docs/verification.md). DCT does not claim enterprise production readiness.
+Target distributions and qualification limits are listed in [platform support](docs/platform-support.md).
 
-## Install
+## Install and launch
 
-Python 3.11+ required. Use an isolated environment, without sudo:
+Python 3.11+ is required. Use an isolated environment, without sudo:
 
 ```sh
 python3 -m venv .venv
@@ -36,11 +47,10 @@ mypy
 pytest
 ```
 
-Linux `/proc` and `/etc/os-release` provide baseline evidence. Optional tools include
-`ip`, `lsblk`, `findmnt`, `timedatectl`, `resolvectl`, `df`, and `fuser`. Storage writes additionally
-need `mount`/`umount` and root or an existing sudo authorization. Missing capabilities are
-shown in the UI. Install tools using your distribution's documentation; no single package
-manager is assumed.
+Baseline evidence uses `/proc`, `/sys` and `/etc/os-release`. Optional capabilities include
+`ip`, `ss`, `ps`, `lsblk`, `findmnt`, `df`, `systemctl`, `journalctl`, `timedatectl`,
+`resolvectl`, `smartctl`, `nvme` and `nvidia-smi`. Explicit connectivity checks use `ping`
+and `getent`. Install utilities using your distribution's documentation.
 
 ## Keyboard
 
@@ -54,29 +64,36 @@ manager is assumed.
 | ? | Contextual help |
 | q | Quit |
 
-Mouse use is optional. Search input consumes ordinary letters while typing; Esc always returns.
-Confirmation starts on Cancel. Collection runs in workers so navigation stays responsive.
+Breadcrumbs identify the current location. Mouse use is optional. Text inputs consume letters
+while typing; Esc returns. Collection runs in workers to keep navigation responsive.
 
 ## Storage actions
 
-Inspect Drives & Filesystems first, then select a device in Mount / Unmount. DCT proposes
-`/mnt/dct-<device>`; an administrator must create that empty directory outside DCT. Only supported
-local filesystems are accepted, mounted `ro,nodev,nosuid,noexec`. Existing system mounts, nested
-mounts, ambiguous devices and changed inventories are refused. Unmount is never forced or lazy;
-busy processes are reported and never killed. Read-only mounts can replay filesystem journals.
+Only individually confirmed, bounded mount/unmount actions can change host state. Inspect
+Drives & Filesystems first, then select a device in Mount / Unmount. An administrator must
+create the proposed empty `/mnt/dct-<device>` directory outside DCT. Supported local data
+filesystems mount with `ro,nodev,nosuid,noexec`; read-only mounting can still replay journals.
+System mounts, nested mounts, ambiguous identity and stale inventories are refused.
 
-Review the displayed operation before confirming. Non-root privilege uses `sudo -n`: DCT
-never asks for passwords. If denied, obtain authorization separately according to local policy,
-then inspect and confirm again. A findmnt check determines success. A timeout or failed
-verification requires fresh inspection before retrying.
+Confirmation starts on Cancel. Non-root execution uses `sudo -n` with existing authorization;
+DCT never collects passwords. Busy processes are reported and never killed. Unmount is never
+forced or lazy. A fresh mount inventory determines verification; inspect again after timeout
+or unverified results. Read [safety](docs/safety.md) before administrative use.
 
-## Reports and demos
+## Evidence, reports and demos
 
-See [demo instructions](docs/demo.md) and [Home screenshot](docs/screenshots/home.svg). Reports contain allowlisted normalized evidence with
-identifiers redacted, never raw command output or logs. Review before sharing. The checked-in
-sample is entirely synthetic. Broader services, networking and GPU collection is future scope;
-manifest entries explicitly identify unavailable domains.
+The local UI exposes commands and detailed evidence. Export uses an explicit sanitized
+allowlist: identities, raw command output, journal text and process names are omitted.
+Review a bundle before sharing and complete its symptom, impact and escalation fields.
+See [incident reports](docs/incident-reports.md) for exact contents and limits.
 
-See [architecture](docs/architecture.md), [safety model](docs/safety.md), and
-[milestone plan](docs/milestone-plan.md). MIT licensed; contributions welcome through reviewed
-changes with fixture tests. No live privileged operations are needed for the test suite.
+Launch the synthetic GPU workstation demo from this checkout:
+
+```sh
+.venv/bin/python -m dct --fixture tests/fixtures/release/arch_gpu_workstation.json
+```
+
+See [demo instructions and screenshots](docs/demo.md), [architecture](docs/architecture.md),
+and the [troubleshooting model](docs/troubleshooting-model.md). Fixture mode never runs
+commands or reads live host files; export writes an ordinary local evidence directory.
+MIT licensed. No privileged host operation is needed for fixture validation.

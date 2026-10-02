@@ -17,7 +17,7 @@ FIXTURES = Path(__file__).parent / "fixtures"
 def test_scenarios_collect_without_live_access(path: Path) -> None:
     backend = FixtureBackend.load(path)
     snapshot = collect(backend)
-    assert snapshot.schema_version == 1
+    assert snapshot.schema_version == 2
     assert snapshot.host.hostname == "example-server"
     assert all(not argv[0].endswith(("mount", "umount")) for argv in backend.calls)
     assert snapshot.host.kernel == "6.8.0-example"
@@ -70,7 +70,7 @@ def test_disk_nearly_full_and_unknown_memory() -> None:
     )
     snapshot = replace(snapshot, host=replace(snapshot.host, memory_available=None))
     assert any(
-        f.code == "memory-unknown" and f.severity == Severity.WARNING for f in assess(snapshot)
+        f.code == "memory-unknown" and f.severity == Severity.UNKNOWN for f in assess(snapshot)
     )
 
 

@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 from dct.collectors.backend import FixtureBackend, LinuxBackend
-from dct.collectors.host import collect
+from dct.collectors.snapshot import collect
 from dct.reports.bundle import export
 from dct.tui.app import DCTApp
 

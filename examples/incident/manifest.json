@@ -1,20 +1,27 @@
 {
-  "schema_version": 1,
-  "collected_at": "2026-10-02T08:06:00.765268+00:00",
+  "schema_version": 2,
+  "collected_at": "2026-10-02T09:37:04.602931+00:00",
   "sanitized": true,
+  "scope": "read-only host/resources/services/network/storage/GPU normalized allowlist",
   "omitted": [
     "raw output",
-    "logs",
+    "journal text",
+    "process commands",
+    "user names",
     "identifiers",
-    "gpu"
+    "environment",
+    "credential files",
+    "SSH material",
+    "prior operation history"
   ],
-  "scope": "milestone 1 host/network/storage; services unavailable",
   "files": {
-    "findings.json": "4605a03b9ea400b4ae248e0f8098fd2f2e79b7e5f31160a0c0be215d1284f980",
-    "network.json": "39c146823c792d18e2ee8125546886b089bd479d290abf5da0a74e11d29f6c03",
-    "services.json": "7af3aef8a03b7096354005d420ab1230515dce3d12b96bd2b711530dce8c6fa5",
-    "storage.json": "720be90ab314b290a3b867a39aa98451656a4d6eee1585ed5033ee0332f93e2c",
-    "summary.md": "a9ff74389e5e19f227573631c96c29a7388389e46ee1884c286864d08e54c8a8",
-    "system.json": "8cf2b323ee081823ab1ab6173cb47c953a8efec9df7a6313c927396073991d3b"
+    "findings.json": "d2d3a5efe65926bae361b9e02f5e4f84dc0eb021350b78e8dd9938ee186b376a",
+    "gpu.json": "db00cefdbe51588c87e2982b323cec773f5b7fb47f8d3591a2afc2d2e6d02c03",
+    "network.json": "c630ceef48ad81882bf664ee3b9739c8df6f67a81667aee77e08c815c2d5d542",
+    "resources.json": "9ed436bef091b229cdb9326c7e9abd958f8452bdcb9fbf4e817dcdea048de2c1",
+    "services.json": "f19e84aafa033dbd3e6566f3d1ad790b2993fafdb2e54f643ade58ddef8c8ea6",
+    "storage.json": "c6ada106856b4f3cf98264ba3552ca9250366a8ef765601f98ce9badcecf2bb4",
+    "summary.md": "597bb5cc5c926179ef97f4bd3fb1c7707b793d9965024435d36bd652fc69f460",
+    "system.json": "bee2004f2cd5ffce663419401579466ade1b31cd3860cad38d2a2f5d87ebcfb7"
   }
 }

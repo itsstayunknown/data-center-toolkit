@@ -1,9 +1,82 @@
 [
   {
     "severity": "HEALTHY",
-    "domain": "resources",
-    "code": "memory",
-    "message": "Available memory: 75.0%",
-    "evidence": "/proc/meminfo"
+    "failure_domain": "resources",
+    "code": "available-ram",
+    "observation": "Available RAM 80.0%",
+    "evidence": "/proc/meminfo; inspect top memory consumers",
+    "confidence": "medium",
+    "suggested_next_action": "Compare PSI and consumers over time; establish workload ownership.",
+    "state_changed": false
+  },
+  {
+    "severity": "UNKNOWN",
+    "failure_domain": "resources",
+    "code": "cpu-sample",
+    "observation": "Current CPU utilization unavailable",
+    "evidence": "/proc/stat",
+    "confidence": "low",
+    "suggested_next_action": "Compare PSI and consumers over time; establish workload ownership.",
+    "state_changed": false
+  },
+  {
+    "severity": "HEALTHY",
+    "failure_domain": "services",
+    "code": "no-failed-services",
+    "observation": "No failed loaded services observed; inactive is not a failure",
+    "evidence": "systemctl show *.service",
+    "confidence": "medium",
+    "suggested_next_action": "Select the unit; inspect exit status and bounded recent journal evidence.",
+    "state_changed": false
+  },
+  {
+    "severity": "UNKNOWN",
+    "failure_domain": "network",
+    "code": "network.dns_unverified",
+    "observation": "Resolvers configured; DNS resolution has not been tested",
+    "evidence": "/etc/resolv.conf; resolvectl status",
+    "confidence": "low",
+    "suggested_next_action": "Check link, address, route and neighbor in order; run DNS for a relevant hostname.",
+    "state_changed": false
+  },
+  {
+    "severity": "UNKNOWN",
+    "failure_domain": "network",
+    "code": "network.coverage_notes",
+    "observation": "1 network collection notes; coverage/ownership is not fully verified",
+    "evidence": "network.notes; inspect the Network screen",
+    "confidence": "low",
+    "suggested_next_action": "Check link, address, route and neighbor in order; run DNS for a relevant hostname.",
+    "state_changed": false
+  },
+  {
+    "severity": "HEALTHY",
+    "failure_domain": "gpu",
+    "code": "vram-pressure",
+    "observation": "GPU 0 (gpu-0): VRAM 10.0% used",
+    "evidence": "nvidia-smi query-gpu; inspect compute owners",
+    "confidence": "medium",
+    "suggested_next_action": "Inspect compute PID ownership and driver telemetry before recommending action.",
+    "state_changed": false
+  },
+  {
+    "severity": "HEALTHY",
+    "failure_domain": "storage",
+    "code": "storage.health",
+    "observation": "device-0: HEALTHY health telemetry",
+    "evidence": "SMART/NVMe normalized telemetry",
+    "confidence": "moderate",
+    "suggested_next_action": "Inspect filesystem capacity and SMART/NVMe telemetry; confirm device ownership.",
+    "state_changed": false
+  },
+  {
+    "severity": "HEALTHY",
+    "failure_domain": "storage",
+    "code": "storage.health",
+    "observation": "device-2: HEALTHY health telemetry",
+    "evidence": "SMART/NVMe normalized telemetry",
+    "confidence": "moderate",
+    "suggested_next_action": "Inspect filesystem capacity and SMART/NVMe telemetry; confirm device ownership.",
+    "state_changed": false
   }
 ]

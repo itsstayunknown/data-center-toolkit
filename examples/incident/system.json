@@ -1,18 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "hostname": "[redacted]",
-  "distro": "Rocky Linux 9.5",
-  "distro_id": "rocky",
-  "version": "9.5",
+  "distro": "Arch Linux",
+  "distro_id": "arch",
+  "version": null,
   "kernel": "6.8.0-example",
   "architecture": "x86_64",
-  "uptime_seconds": 86400.0,
-  "load": [
-    0.1,
-    0.2,
-    0.3
-  ],
-  "memory_total": 17179869184,
-  "memory_available": 12884901888,
+  "uptime_seconds": 1234.0,
   "synchronized": true
 }

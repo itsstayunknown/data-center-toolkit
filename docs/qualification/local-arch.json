@@ -1,0 +1,344 @@
+{
+  "qualified_at": "2026-10-02T09:55:16.072155+00:00",
+  "scope": "local read-only collector/diagnostic qualification, no mount/unmount or active probes",
+  "distro_id": "arch",
+  "kernel": "7.2.7-arch1-1",
+  "architecture": "x86_64",
+  "systemd_available": true,
+  "services_observed": 54,
+  "bounded_journal_characters": 17,
+  "process_count": 693,
+  "cpu_sample_available": true,
+  "network_interfaces": 10,
+  "storage_inventory_complete": true,
+  "storage_devices": 8,
+  "disk_health_states": [
+    "UNKNOWN",
+    "UNKNOWN",
+    "UNKNOWN",
+    "UNKNOWN"
+  ],
+  "gpu_available": true,
+  "gpu_count": 1,
+  "finding_counts": {
+    "HEALTHY": 2,
+    "WARNING": 7,
+    "CRITICAL": 5,
+    "UNKNOWN": 26
+  },
+  "state_changes": false,
+  "commands": [
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 14,
+      "stderr_bytes": 0,
+      "command": "uname",
+      "argument_count": 1
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 7,
+      "stderr_bytes": 0,
+      "command": "uname",
+      "argument_count": 1
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 49,
+      "stderr_bytes": 0,
+      "command": "timedatectl",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 5183,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 124,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 96,
+      "command": "resolvectl",
+      "argument_count": 1
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 2299,
+      "stderr_bytes": 0,
+      "command": "lsblk",
+      "argument_count": 5
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 15854,
+      "stderr_bytes": 0,
+      "command": "findmnt",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 52,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 52,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 42,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 52,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 52,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 54,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 56,
+      "stderr_bytes": 0,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 121,
+      "command": "df",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 42022,
+      "stderr_bytes": 0,
+      "command": "ps",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 34334,
+      "stderr_bytes": 0,
+      "command": "systemctl",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 4798,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 4
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 5183,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 5506,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 5
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 2855,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 6
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 747,
+      "stderr_bytes": 0,
+      "command": "ip",
+      "argument_count": 3
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 96,
+      "command": "resolvectl",
+      "argument_count": 2
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 4502,
+      "stderr_bytes": 0,
+      "command": "ss",
+      "argument_count": 2
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 117,
+      "stderr_bytes": 0,
+      "command": "nvidia-smi",
+      "argument_count": 2
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0,
+      "command": "nvidia-smi",
+      "argument_count": 2
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 2333,
+      "stderr_bytes": 0,
+      "command": "nvidia-smi",
+      "argument_count": 0
+    },
+    {
+      "returncode": 2,
+      "error": null,
+      "stdout_bytes": 618,
+      "stderr_bytes": 0,
+      "command": "smartctl",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 598,
+      "stderr_bytes": 0,
+      "command": "smartctl",
+      "argument_count": 4
+    },
+    {
+      "returncode": 2,
+      "error": null,
+      "stdout_bytes": 620,
+      "stderr_bytes": 0,
+      "command": "smartctl",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 48,
+      "stderr_bytes": 1343,
+      "command": "nvme",
+      "argument_count": 3
+    },
+    {
+      "returncode": 2,
+      "error": null,
+      "stdout_bytes": 620,
+      "stderr_bytes": 0,
+      "command": "smartctl",
+      "argument_count": 4
+    },
+    {
+      "returncode": 1,
+      "error": null,
+      "stdout_bytes": 48,
+      "stderr_bytes": 1343,
+      "command": "nvme",
+      "argument_count": 3
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 678,
+      "stderr_bytes": 0,
+      "command": "systemctl",
+      "argument_count": 5
+    },
+    {
+      "returncode": 0,
+      "error": null,
+      "stdout_bytes": 17,
+      "stderr_bytes": 0,
+      "command": "journalctl",
+      "argument_count": 7
+    }
+  ]
+}

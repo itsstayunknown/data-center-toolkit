@@ -43,7 +43,31 @@
       "source": "[redacted]",
       "target": "[redacted]",
       "filesystem": "xfs",
-      "read_only": false
+      "read_only": false,
+      "bytes_total": 100,
+      "bytes_available": 80
+    }
+  ],
+  "health": [
+    {
+      "device": "device-0",
+      "health": "HEALTHY",
+      "temperature_c": 35,
+      "critical_warning": null,
+      "media_errors": null,
+      "available_spare": null,
+      "spare_threshold": null,
+      "unsafe_shutdowns": null
+    },
+    {
+      "device": "device-2",
+      "health": "HEALTHY",
+      "temperature_c": 35,
+      "critical_warning": null,
+      "media_errors": null,
+      "available_spare": null,
+      "spare_threshold": null,
+      "unsafe_shutdowns": null
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "files": {
+    "/proc/1/comm": "systemd\n"
+  },
+  "commands": {
+    "systemctl show --no-pager --property=Id,LoadState,ActiveState,SubState,UnitFileState,MainPID,ExecMainStartTimestamp,ExecMainStatus,Result,User,Group,NRestarts,ExecStart,Requires,Wants,After *.service": {
+      "stdout": "Id=sshd.service\nLoadState=loaded\nActiveState=failed\nSubState=running\nUnitFileState=enabled\nMainPID=23\nExecMainStartTimestamp=Fri 2026-10-02 12:00:00 UTC\nExecMainStatus=203\nResult=exit-code\nUser=root\nGroup=root\nNRestarts=0\nExecStart={ path=/usr/sbin/sshd ; argv[]=/usr/sbin/sshd -D ; }\nRequires=network.target\nWants=network-online.target\nAfter=network.target\n"
+    }
+  }
+}

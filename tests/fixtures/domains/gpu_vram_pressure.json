@@ -1,0 +1,16 @@
+{
+  "commands": {
+    "nvidia-smi --query-gpu=index,name,driver_version,temperature.gpu,power.draw,power.limit,utilization.gpu,memory.total,memory.used,memory.free,pci.bus_id,pstate,ecc.errors.uncorrected.aggregate.total --format=csv,noheader,nounits": {
+      "stdout": "0, NVIDIA RTX, 550.1, 88, 70, 200, 80, 10000, 9500, 500, 0000:01:00.0, P0, N/A\n"
+    },
+    "nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name,used_gpu_memory --format=csv,noheader,nounits": {
+      "stdout": "GPU-abc, 10, worker, 9500\n"
+    },
+    "nvidia-smi": {
+      "stdout": "CUDA Version: 12.4"
+    }
+  },
+  "files": {
+    "/proc/10/status": "Name:\tworker\nUid:\t1000\t1000\t1000\t1000\n"
+  }
+}

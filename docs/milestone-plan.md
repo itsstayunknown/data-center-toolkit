@@ -1,4 +1,7 @@
-# Milestone 1 plan
+# Milestone 1 plan (completed historical scope)
+
+The v0.1 continuation is tracked in [release plan](release-plan.md). This document
+records the original milestone boundary; future-domain references below are historical.
 
 Objective: a public-quality first slice of DCT with predictable navigation, portable host
 identity and storage evidence, conservatively bounded mount/unmount, and synthetic fixtures.

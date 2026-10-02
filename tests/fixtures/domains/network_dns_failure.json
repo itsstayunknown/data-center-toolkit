@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "getent ahosts invalid.test": {
+      "returncode": 2
+    },
+    "ping -n -c 1 -W 2 -I eth0 192.0.2.1": {
+      "returncode": 0,
+      "stdout": "1 received"
+    }
+  }
+}

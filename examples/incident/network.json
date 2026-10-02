@@ -1,4 +1,6 @@
 {
+  "available": true,
+  "collected": true,
   "addresses": [
     {
       "interface": "[redacted]",
@@ -11,5 +13,36 @@
   ],
   "dns": [
     "[redacted]"
-  ]
+  ],
+  "interfaces": [
+    {
+      "interface": "interface-0",
+      "mac": "[redacted]",
+      "addresses": "[redacted]",
+      "state": "UP",
+      "carrier": true,
+      "mtu": 1500,
+      "speed_mbps": 1000,
+      "rx_bytes": 10000,
+      "tx_bytes": 20000,
+      "rx_errors": 0,
+      "tx_errors": 0,
+      "rx_dropped": 0,
+      "tx_dropped": 0
+    }
+  ],
+  "coverage_notes_count": 1,
+  "coverage": {
+    "links_available": true,
+    "addresses_available": true,
+    "routes_available": true,
+    "neighbors_available": true,
+    "listeners_available": true
+  },
+  "routes_count": 1,
+  "default_routes_count": 1,
+  "neighbors_count": 0,
+  "listeners_count": 1,
+  "resolver_status_collected": true,
+  "dns_resolution_tested": false
 }

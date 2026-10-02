@@ -1,34 +1,59 @@
 # Safety model
 
-READ_ONLY gathers evidence. PRIVILEGED_WRITE includes only an individually confirmed
-mount/unmount operation. DESTRUCTIVE is a reserved classification with no implementation.
-Running DCT itself never changes host state. Do not run the whole TUI with sudo unless necessary.
+**READ_ONLY** gathers evidence. **PRIVILEGED_WRITE** is limited to an individually confirmed,
+bounded mount/unmount operation. **DESTRUCTIVE** is reserved and unavailable in v0.1.
+Quick Triage never changes host state. Export creates ordinary local files.
 
-Commands use argv with `shell=False`, a bounded timeout and captured exit status/stdout/stderr.
-Missing binaries, permissions, malformed JSON and timeouts become evidence gaps.
-All input is validated. Operation binaries use the same safe PATH as collectors; exclude
-working-directory and user-writable executable locations from privilege execution.
-Mount directories must already exist: DCT does not create privileged directories.
+## Command and diagnostic boundary
 
-Before confirmation DCT refreshes inventory, displays the device, target, protective mount
-options, exact command and privilege requirement. The operation rechecks the current
-inventory before execution and refuses a changed proposal. No global authorization flag.
-It verifies the exact source/target and read-only state with findmnt afterwards. A successful
-command with missing or contradictory verification is an unverified result, never success.
+Commands use argv, `shell=False`, a safe system PATH, captured status and bounded timeouts.
+Missing commands, permission denial, malformed telemetry and timeouts produce explicit gaps.
+DCT never executes arbitrary shell text. A recommendation remains text; it never silently
+becomes an operation.
 
-Unmount checks `fuser -m` when available; known users block execution. Permission-limited
-or missing busy checks are explicitly unknown, and kernel umount remains authoritative.
-DCT never kills processes or uses force/lazy/recursive flags. Refuse system mounts and
-nested mount trees. Non-root uses noninteractive sudo only after explicit confirmation;
-DCT never collects credentials. Cancellation makes no write calls.
+No process kill, GPU reset, network reconfiguration, filesystem format, partition modification,
+automatic service restart, SMART self-test or destructive test is implemented. Optional active
+network checks require user-selected targets: they generate packets and DNS requests but do
+not change configuration. General network inspection does not require internet access.
 
-Reports default to redacting hostnames, IPs, UUIDs, labels, mount paths and DNS. Only
-normalized allowlisted fields are exported; no raw stdout, environment, logs, process
-arguments, shell histories or arbitrary config. A manifest declares scope and omissions.
-Review bundles before sharing; device sizes, OS versions and hardware topology remain.
+Service journals are requested only for a selected unit, warning and higher severity, within
+one hour, at most 30 lines. Retained display text is bounded to 16 KiB. Local evidence can
+contain private operational details; do not record or share a live screen without review.
 
-Limitations: inventory revalidation reduces but cannot eliminate races with other host
-administrators. Commands that time out may have completed a change: inspect before retrying.
-Read-only mounts can replay journals. Busy checks can be incomplete without root. Existing
-sudo policy is external to DCT. Supported distro behavior must be qualified on real machines
-before any release is claimed production-ready; fixtures are not distro certification.
+## Bounded storage operations
+
+Before confirmation DCT refreshes inventory and displays the device, target, protective
+options, exact command and privilege requirement. Confirmation defaults to Cancel. The
+operation rechecks complete inventory and refuses stale proposals or ambiguous identities.
+It never creates privileged directories, edits fstab or retries automatically.
+
+Mounts support selected local data filesystems only, using `ro,nodev,nosuid,noexec`. Device
+identity is kernel major:minor; UUID is display evidence, not authorization. Targets are
+existing direct `/mnt/dct-*` children; the target and all ancestors must be real root-owned
+directories without group/world write permission or symlinks. Mount targets must be empty.
+System mounts, swap, nested mount trees and unsafe targets are refused.
+
+Unmount checks `fuser` where available; known users block execution. Missing or incomplete
+busy evidence stays unknown, and kernel `umount` remains authoritative. No force, lazy or
+recursive options are used. No process is terminated. Root executes directly; otherwise an
+approved proposal can use `sudo -n --` with existing external authorization. DCT never
+collects credentials or opens an interactive password prompt.
+
+Every attempted write refreshes `findmnt`, including nonzero status and timeout. Command
+success and verified observed state are separate. Missing or contradictory verification is
+unverified, never successful. Read-only mounts can replay filesystem journals; these are
+administrative mounts, not forensic acquisition. Revalidation reduces but cannot eliminate
+filesystem/namespace races with another administrator; DCT is not a hardened privilege broker.
+
+## Incident privacy
+
+Exports use a normalized allowlist, with identifiers redacted or replaced by generic labels.
+No environment dump, credential files, SSH material, raw command output, journal text,
+process arguments or process names is exported. Collection does not read credential files.
+Hardware characteristics, OS versions, sizes, counters and operational states remain and may
+still be sensitive. Review bundles before sharing. See [incident reports](incident-reports.md)
+for exact scope, omissions and operation-history limits.
+
+Fixture tests and automated local qualification do not require privileged operations.
+Distribution qualification requires actual recorded host testing; fixture coverage is not
+certification or evidence of enterprise production readiness.

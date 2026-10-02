@@ -1,0 +1,8 @@
+{
+  "commands": {
+    "smartctl --json --all -- /dev/sda": {
+      "returncode": 8,
+      "stdout": "{\"smart_status\": {\"passed\": false}}"
+    }
+  }
+}

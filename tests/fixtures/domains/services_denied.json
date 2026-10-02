@@ -1,0 +1,11 @@
+{
+  "files": {
+    "/proc/1/comm": "systemd\n"
+  },
+  "commands": {
+    "systemctl show --no-pager --property=Id,LoadState,ActiveState,SubState,UnitFileState,MainPID,ExecMainStartTimestamp,ExecMainStatus,Result,User,Group,NRestarts,ExecStart,Requires,Wants,After *.service": {
+      "returncode": 1,
+      "stderr": "Access denied"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "commands": {
+    "ip -j -s link show": {
+      "stdout": "[{\"ifname\": \"eth0\", \"flags\": [\"UP\"], \"operstate\": \"UP\", \"mtu\": 1500, \"address\": \"00:11:22:33:44:55\", \"stats64\": {\"rx\": {\"bytes\": 10}, \"tx\": {}}}]"
+    },
+    "ip -j address show": {
+      "stdout": "[{\"ifname\": \"eth0\", \"addr_info\": [{\"local\": \"192.0.2.2\", \"prefixlen\": 24}]}]"
+    },
+    "ip -j route show table all": {
+      "stdout": "[]"
+    },
+    "ip -j -6 route show table all": {
+      "stdout": "[]"
+    },
+    "ip -j neighbor show": {
+      "stdout": "[]"
+    },
+    "ss -H -lntup": {
+      "stdout": "tcp LISTEN 0 128 0.0.0.0:22 *:*"
+    }
+  },
+  "files": {
+    "/etc/resolv.conf": "nameserver 192.0.2.53\n",
+    "/sys/class/net/eth0/carrier": "1",
+    "/sys/class/net/eth0/speed": "1000"
+  }
+}

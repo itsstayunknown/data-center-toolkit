@@ -1,4 +1,16 @@
 {
-  "available": false,
-  "reason": "outside milestone 1"
+  "available": true,
+  "units": [
+    {
+      "unit": "service-0",
+      "load_state": "loaded",
+      "active_state": "active",
+      "sub_state": "running",
+      "enabled_state": "enabled",
+      "exit_status": 0,
+      "restart_count": 0,
+      "pid_present": true,
+      "start_time_present": true
+    }
+  ]
 }

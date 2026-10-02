@@ -1,0 +1,64 @@
+{
+  "available": true,
+  "uptime_seconds": 1234.0,
+  "load": [
+    0.3,
+    0.2,
+    0.1
+  ],
+  "cpu_percent": null,
+  "logical_cpus": 2,
+  "physical_cores": 1,
+  "sockets": 1,
+  "memory_total": 1024000000,
+  "memory_used": 204800000,
+  "memory_available": 819200000,
+  "swap_total": 102400000,
+  "swap_used": 0,
+  "process_count": 2,
+  "pressure": [
+    {
+      "resource": "cpu",
+      "some_avg10": 0.0,
+      "some_avg60": 0.0,
+      "full_avg60": null
+    },
+    {
+      "resource": "memory",
+      "some_avg10": 0.0,
+      "some_avg60": 0.0,
+      "full_avg60": 0.0
+    },
+    {
+      "resource": "io",
+      "some_avg10": 0.0,
+      "some_avg60": 0.0,
+      "full_avg60": null
+    }
+  ],
+  "top_cpu": [
+    {
+      "process": "process-0",
+      "cpu_percent": 80.0,
+      "memory_bytes": 512000000,
+      "elapsed_seconds": 120
+    },
+    {
+      "process": "process-1",
+      "cpu_percent": 5.0,
+      "memory_bytes": 10240000,
+      "elapsed_seconds": 500
+    }
+  ],
+  "top_memory": [
+    {
+      "process": "process-0",
+      "memory_bytes": 512000000
+    },
+    {
+      "process": "process-1",
+      "memory_bytes": 10240000
+    }
+  ],
+  "cgroup": "[redacted]"
+}
