@@ -1,0 +1,49 @@
+{
+  "complete": true,
+  "devices": [
+    {
+      "device": "device-0",
+      "type": "disk",
+      "size": 107374182400,
+      "filesystem": null,
+      "read_only": false,
+      "label": "[redacted]",
+      "uuid": "[redacted]"
+    },
+    {
+      "device": "device-1",
+      "type": "part",
+      "size": 107374182400,
+      "filesystem": "xfs",
+      "read_only": false,
+      "label": "[redacted]",
+      "uuid": "[redacted]"
+    },
+    {
+      "device": "device-2",
+      "type": "disk",
+      "size": 214748364800,
+      "filesystem": null,
+      "read_only": false,
+      "label": "[redacted]",
+      "uuid": "[redacted]"
+    },
+    {
+      "device": "device-3",
+      "type": "part",
+      "size": 214748364800,
+      "filesystem": "ext4",
+      "read_only": false,
+      "label": "[redacted]",
+      "uuid": "[redacted]"
+    }
+  ],
+  "mounts": [
+    {
+      "source": "[redacted]",
+      "target": "[redacted]",
+      "filesystem": "xfs",
+      "read_only": false
+    }
+  ]
+}

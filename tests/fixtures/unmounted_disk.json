@@ -1,0 +1,64 @@
+{
+  "description": "Entirely synthetic fixture; no real infrastructure or customer data",
+  "root": true,
+  "safe_targets": [
+    "/mnt/dct-sdb1"
+  ],
+  "files": {
+    "/etc/os-release": "NAME=\"Rocky Linux\"\nID=rocky\nVERSION_ID=\"9.5\"\nPRETTY_NAME=\"Rocky Linux 9.5\"\n",
+    "/proc/sys/kernel/hostname": "example-server\n",
+    "/proc/uptime": "86400.00 1000.00\n",
+    "/proc/loadavg": "0.10 0.20 0.30 1/200 99\n",
+    "/proc/meminfo": "MemTotal: 16777216 kB\nMemAvailable: 12582912 kB\n",
+    "/etc/resolv.conf": "nameserver 192.0.2.53\n",
+    "/etc/timezone": "Etc/UTC\n"
+  },
+  "commands": {
+    "uname -r": {
+      "stdout": "6.8.0-example\n",
+      "returncode": 0
+    },
+    "uname -m": {
+      "stdout": "x86_64\n",
+      "returncode": 0
+    },
+    "timedatectl show --property=Timezone --property=NTPSynchronized": {
+      "stdout": "Timezone=Etc/UTC\nNTPSynchronized=yes\n",
+      "returncode": 0
+    },
+    "resolvectl dns": {
+      "stdout": "Global: 192.0.2.53\n",
+      "returncode": 0
+    },
+    "ip -j address show": {
+      "stdout": "[{\"ifname\": \"eth0\", \"operstate\": \"UP\", \"addr_info\": [{\"local\": \"192.0.2.10\", \"family\": \"inet\"}]}]",
+      "returncode": 0
+    },
+    "ip -j route show default": {
+      "stdout": "[{\"dst\": \"default\", \"gateway\": \"192.0.2.1\", \"dev\": \"eth0\"}]",
+      "returncode": 0
+    },
+    "lsblk --json --bytes --tree --output PATH,TYPE,SIZE,FSTYPE,LABEL,UUID,RO,MAJ:MIN": {
+      "stdout": "{\"blockdevices\": [{\"path\": \"/dev/sda\", \"type\": \"disk\", \"size\": 107374182400, \"fstype\": null, \"label\": null, \"uuid\": null, \"ro\": false, \"maj:min\": \"8:0\", \"children\": [{\"path\": \"/dev/sda1\", \"type\": \"part\", \"size\": 107374182400, \"fstype\": \"xfs\", \"label\": \"system\", \"uuid\": \"synthetic-system\", \"ro\": false, \"maj:min\": \"8:1\"}]}, {\"path\": \"/dev/sdb\", \"type\": \"disk\", \"size\": 214748364800, \"fstype\": null, \"label\": null, \"uuid\": null, \"ro\": false, \"maj:min\": \"8:16\", \"children\": [{\"path\": \"/dev/sdb1\", \"type\": \"part\", \"size\": 214748364800, \"fstype\": \"ext4\", \"label\": \"synthetic-data\", \"uuid\": \"synthetic-data-uuid\", \"ro\": false, \"maj:min\": \"8:17\"}]}]}",
+      "returncode": 0
+    },
+    "findmnt --json --output SOURCE,TARGET,FSTYPE,OPTIONS,MAJ:MIN": {
+      "stdout": "{\"filesystems\": [{\"source\": \"/dev/sda1\", \"target\": \"/\", \"fstype\": \"xfs\", \"options\": \"rw,relatime\", \"maj:min\": \"8:1\"}]}",
+      "returncode": 0
+    },
+    "systemctl --failed --no-legend": {
+      "stdout": "",
+      "returncode": 0
+    },
+    "nvidia-smi --query-gpu=name,memory.total,memory.used --format=csv,noheader,nounits": {
+      "returncode": 1,
+      "stderr": "No devices found"
+    }
+  },
+  "usage": {
+    "/": {
+      "total": 100,
+      "available": 80
+    }
+  }
+}

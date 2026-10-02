@@ -1,0 +1,15 @@
+{
+  "addresses": [
+    {
+      "interface": "[redacted]",
+      "address": "[redacted]",
+      "family": "inet"
+    }
+  ],
+  "gateways": [
+    "[redacted]"
+  ],
+  "dns": [
+    "[redacted]"
+  ]
+}

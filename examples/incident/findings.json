@@ -1,0 +1,9 @@
+[
+  {
+    "severity": "HEALTHY",
+    "domain": "resources",
+    "code": "memory",
+    "message": "Available memory: 75.0%",
+    "evidence": "/proc/meminfo"
+  }
+]

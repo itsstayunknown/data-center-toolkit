@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "collected_at": "2026-10-02T08:06:00.765268+00:00",
+  "sanitized": true,
+  "omitted": [
+    "raw output",
+    "logs",
+    "identifiers",
+    "gpu"
+  ],
+  "scope": "milestone 1 host/network/storage; services unavailable",
+  "files": {
+    "findings.json": "4605a03b9ea400b4ae248e0f8098fd2f2e79b7e5f31160a0c0be215d1284f980",
+    "network.json": "39c146823c792d18e2ee8125546886b089bd479d290abf5da0a74e11d29f6c03",
+    "services.json": "7af3aef8a03b7096354005d420ab1230515dce3d12b96bd2b711530dce8c6fa5",
+    "storage.json": "720be90ab314b290a3b867a39aa98451656a4d6eee1585ed5033ee0332f93e2c",
+    "summary.md": "a9ff74389e5e19f227573631c96c29a7388389e46ee1884c286864d08e54c8a8",
+    "system.json": "8cf2b323ee081823ab1ab6173cb47c953a8efec9df7a6313c927396073991d3b"
+  }
+}

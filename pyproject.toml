@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "data-center-toolkit"
+version = "0.1.0"
+description = "Evidence-first Linux technician terminal toolkit"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = ["textual>=1.0,<9", "rich>=13.9,<15"]
+classifiers = ["Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "ruff>=0.9", "mypy>=1.14"]
+
+[project.scripts]
+dct = "dct.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dct"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/dct"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
